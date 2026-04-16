@@ -1,7 +1,7 @@
 """Optional live weather and news signal enrichment.
 
 The app runs without API keys by using the demo JSON feed. If keys are present,
-this module enriches the selected destination port with live OpenWeather and
+this module enriches the selected destination hub with live OpenWeather and
 NewsAPI signals. API keys never leave the backend.
 """
 
@@ -17,12 +17,18 @@ from urllib.request import Request, urlopen
 
 from backend.agent import clamp, parse_inquiry
 from backend.config import key_configured
-from backend.reference import PORT_COORDINATES
+from backend.reference import HUB_COORDINATES, normalize_mode
 
 
 OPENWEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
 NEWSAPI_URL = "https://newsapi.org/v2/everything"
 RISK_TERMS = ("delay", "strike", "congestion", "storm", "disruption", "closure", "backlog", "reroute")
+MODE_NEWS_TERMS = {
+    "airways": "airport OR cargo OR airline OR runway OR ground handling",
+    "railways": "rail OR train OR terminal OR corridor OR track",
+    "roadways": "road OR highway OR terminal OR fleet OR traffic",
+    "waterways": "port OR cruise OR vessel OR shipping OR berth",
+}
 
 
 def live_source_status() -> dict:
@@ -40,30 +46,37 @@ def live_source_status() -> dict:
 
 
 def enrich_signals_for_payload(base_signals: dict, payload: dict, logger: Logger) -> tuple[dict, dict]:
-    """Return a copy of signals enriched for the requested destination port."""
+    """Return a copy of signals enriched for the requested destination hub."""
     signals = copy.deepcopy(base_signals)
     parsed = parse_inquiry(str(payload.get("query", "")), signals)
-    destination = str(payload.get("destination_port") or parsed.get("destination_port") or "Jebel Ali")
-    port_signal = signals.get("ports", {}).get(destination)
+    destination = str(
+        payload.get("destination_hub")
+        or payload.get("destination_port")
+        or parsed.get("destination_hub")
+        or "Jebel Ali Port"
+    )
+    mode = normalize_mode(str(payload.get("transport_mode") or parsed.get("transport_mode") or ""))
+    hub_signal = signals.get("hubs", {}).get(destination)
     status = live_source_status()
 
-    if not port_signal:
-        status["destination"] = {"port": destination, "live_enriched": False, "reason": "unknown destination"}
+    if not hub_signal:
+        status["destination"] = {"hub": destination, "live_enriched": False, "reason": "unknown destination"}
         return signals, status
 
-    status["destination"] = {"port": destination, "live_enriched": False}
+    mode = mode or str(hub_signal.get("mode", ""))
+    status["destination"] = {"hub": destination, "mode": mode, "live_enriched": False}
     weather = _fetch_openweather(destination, logger)
     if weather:
-        port_signal["weather"] = weather
+        hub_signal["weather"] = weather
         status["openweather"]["used"] = True
         status["destination"]["live_enriched"] = True
     else:
         status["openweather"]["used"] = False
 
-    news_item = _fetch_news(destination, logger)
+    news_item = _fetch_news(destination, mode, logger)
     if news_item:
-        existing = port_signal.get("news", [])
-        port_signal["news"] = [news_item, *existing[:1]]
+        existing = hub_signal.get("news", [])
+        hub_signal["news"] = [news_item, *existing[:1]]
         status["newsapi"]["used"] = True
         status["destination"]["live_enriched"] = True
     else:
@@ -72,9 +85,9 @@ def enrich_signals_for_payload(base_signals: dict, payload: dict, logger: Logger
     return signals, status
 
 
-def _fetch_openweather(port: str, logger: Logger) -> dict | None:
+def _fetch_openweather(hub: str, logger: Logger) -> dict | None:
     key = os.getenv("OPENWEATHER_API_KEY", "").strip()
-    coords = PORT_COORDINATES.get(port)
+    coords = HUB_COORDINATES.get(hub)
     if not key or not coords:
         return None
     try:
@@ -100,17 +113,18 @@ def _fetch_openweather(port: str, logger: Logger) -> dict | None:
             "source": "OpenWeather live API",
         }
     except Exception as exc:
-        logger.warning("OpenWeather enrichment failed for %s: %s", port, exc)
+        logger.warning("OpenWeather enrichment failed for %s: %s", hub, exc)
         return None
 
 
-def _fetch_news(port: str, logger: Logger) -> dict | None:
+def _fetch_news(hub: str, mode: str, logger: Logger) -> dict | None:
     key = os.getenv("NEWSAPI_API_KEY", "").strip()
     if not key:
         return None
     try:
         oldest = (datetime.now(timezone.utc) - timedelta(days=7)).date().isoformat()
-        query = f'"{port}" AND (port OR shipping OR shipment OR logistics OR congestion OR strike)'
+        mode_terms = MODE_NEWS_TERMS.get(mode, "logistics OR operations OR delay")
+        query = f'"{hub}" AND ({mode_terms})'
         params = urlencode(
             {
                 "q": query,
@@ -136,7 +150,7 @@ def _fetch_news(port: str, logger: Logger) -> dict | None:
             "published_at": article.get("publishedAt"),
         }
     except Exception as exc:
-        logger.warning("NewsAPI enrichment failed for %s: %s", port, exc)
+        logger.warning("NewsAPI enrichment failed for %s: %s", hub, exc)
         return None
 
 

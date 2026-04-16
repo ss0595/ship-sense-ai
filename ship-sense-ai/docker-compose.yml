@@ -14,11 +14,38 @@ services:
       SHIPSENSE_MFA_DEMO_CODE: "${SHIPSENSE_MFA_DEMO_CODE:-true}"
       SHIPSENSE_GOOGLE_DEMO: "${SHIPSENSE_GOOGLE_DEMO:-true}"
       SHIPSENSE_WORKERS: "${SHIPSENSE_WORKERS:-2}"
+      SHIPSENSE_DATABASE_URL: "${SHIPSENSE_DATABASE_URL:-}"
+      SHIPSENSE_QUEUE_BACKEND: "${SHIPSENSE_QUEUE_BACKEND:-redis}"
+      SHIPSENSE_REDIS_URL: "${SHIPSENSE_REDIS_URL:-redis://redis:6379/0}"
     ports:
       - "8000:8000"
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+    networks:
+      - shipsense-net
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: shipsense-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - shipsense-net
+
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["database"]
+    environment:
+      POSTGRES_DB: shipsense
+      POSTGRES_USER: shipsense
+      POSTGRES_PASSWORD: shipsense
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - shipsense-net
 
@@ -47,6 +74,46 @@ services:
     depends_on:
       - prometheus
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    profiles: ["logging"]
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    networks:
+      - shipsense-net
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.3
+    profiles: ["logging"]
+    environment:
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - shipsense-net
+
+  fluent-bit:
+    image: fluent/fluent-bit:3.1
+    profiles: ["logging"]
+    command: ["/fluent-bit/bin/fluent-bit", "-c", "/fluent-bit/etc/fluent-bit.conf"]
+    volumes:
+      - ./logs:/logs:ro
+      - ./logging/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./logging/fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf:ro
+    depends_on:
+      - elasticsearch
+    networks:
+      - shipsense-net
+
 networks:
   shipsense-net:
     name: shipsense-net
+
+volumes:
+  postgres-data:

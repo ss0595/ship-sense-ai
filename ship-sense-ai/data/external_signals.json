@@ -1,273 +1,616 @@
 {
-  "last_updated": "2026-04-11T09:15:00+04:00",
-  "ports": {
-    "Jebel Ali": {
-      "country": "UAE",
-      "region": "Gulf",
-      "weather": {
-        "condition": "Coastal winds with dust haze near the UAE approach",
-        "severity": 64,
-        "wind_kph": 38,
-        "rain_mm": 2
-      },
-      "port": {
-        "congestion_index": 72,
-        "berth_wait_hours": 18,
-        "customs_backlog": "Medium"
-      },
-      "news": [
-        {
-          "headline": "High yard utilization reported on Gulf feeder links",
-          "severity": 58,
-          "source": "Port ops demo feed"
-        },
-        {
-          "headline": "Regional carrier schedules are compressing after a weather window",
-          "severity": 52,
-          "source": "News demo feed"
-        }
-      ],
-      "route_alerts": [
-        {
-          "route": "Mumbai-Jebel Ali",
-          "risk": 66,
-          "message": "Feeder departure buffers are tight on the Mumbai-Jebel Ali corridor"
-        },
-        {
-          "route": "Nhava Sheva-Jebel Ali",
-          "risk": 72,
-          "message": "Recent sailings on Nhava Sheva-Jebel Ali saw berth wait spillover"
-        }
-      ],
-      "alternate_ports": ["Khalifa Port", "Sohar Port"],
-      "mitigations": [
-        "Ask the carrier to hold an alternate discharge option for 24 hours.",
-        "Share a proactive ETA watch with the consignee and customs broker."
-      ]
-    },
-    "Singapore": {
-      "country": "Singapore",
-      "region": "Southeast Asia",
-      "weather": {
-        "condition": "Scattered showers, normal marine visibility",
-        "severity": 30,
-        "wind_kph": 22,
-        "rain_mm": 6
-      },
-      "port": {
-        "congestion_index": 45,
-        "berth_wait_hours": 8,
-        "customs_backlog": "Low"
-      },
-      "news": [
-        {
-          "headline": "Transshipment windows remain stable with minor rain interruptions",
-          "severity": 24,
-          "source": "Port ops demo feed"
-        }
-      ],
-      "route_alerts": [
-        {
-          "route": "Mumbai-Singapore",
-          "risk": 32,
-          "message": "Normal corridor conditions with small weather buffer"
-        }
-      ],
-      "alternate_ports": ["Port Klang", "Tanjung Pelepas"],
-      "mitigations": [
-        "Keep transshipment documents ready to preserve the current slot."
-      ]
-    },
-    "Rotterdam": {
-      "country": "Netherlands",
-      "region": "Europe",
-      "weather": {
-        "condition": "North Sea wind advisory and wet terminal conditions",
-        "severity": 59,
-        "wind_kph": 44,
-        "rain_mm": 12
-      },
-      "port": {
-        "congestion_index": 67,
-        "berth_wait_hours": 14,
-        "customs_backlog": "Medium"
-      },
-      "news": [
-        {
-          "headline": "Labor meeting may slow some container yard moves this week",
-          "severity": 54,
-          "source": "News demo feed"
-        }
-      ],
-      "route_alerts": [
-        {
-          "route": "Shanghai-Rotterdam",
-          "risk": 60,
-          "message": "Long-haul Asia-Europe schedules have reduced recovery buffer"
-        }
-      ],
-      "alternate_ports": ["Antwerp-Bruges", "Hamburg"],
-      "mitigations": [
-        "Confirm onward rail slot and prepare customer buffer messaging."
-      ]
-    },
-    "Nhava Sheva": {
+  "last_updated": "2026-04-16T18:55:00+05:30",
+  "hubs": {
+    "Ahmedabad Rail Terminal": {
+      "mode": "railways",
       "country": "India",
       "region": "West India",
       "weather": {
-        "condition": "Clear conditions with localized heat stress",
-        "severity": 34,
+        "condition": "Dry heat with moderate crosswinds across the terminal yard",
+        "severity": 32,
         "wind_kph": 18,
         "rain_mm": 0
       },
-      "port": {
-        "congestion_index": 62,
-        "berth_wait_hours": 10,
-        "customs_backlog": "Medium"
+      "operations": {
+        "capacity_index": 56,
+        "wait_hours": 7,
+        "backlog": "Medium",
+        "metric_label": "terminal congestion",
+        "wait_label": "path allocation"
       },
       "news": [
         {
-          "headline": "Gate flow is steady; documentation queues remain moderate",
-          "severity": 35,
-          "source": "Port ops demo feed"
-        }
-      ],
-      "route_alerts": [],
-      "alternate_ports": ["Mundra", "Pipavav"],
-      "mitigations": [
-        "Pre-verify customs paperwork before the truck reaches the gate."
-      ]
-    },
-    "Shanghai": {
-      "country": "China",
-      "region": "East Asia",
-      "weather": {
-        "condition": "Dense fog pockets reported around early morning sailings",
-        "severity": 57,
-        "wind_kph": 20,
-        "rain_mm": 4
-      },
-      "port": {
-        "congestion_index": 64,
-        "berth_wait_hours": 13,
-        "customs_backlog": "Medium"
-      },
-      "news": [
-        {
-          "headline": "Feeder recovery is improving but blank sailing risk remains visible",
-          "severity": 50,
-          "source": "News demo feed"
+          "headline": "Terminal crews are clearing the overnight wagon build-up in staged batches",
+          "severity": 34,
+          "source": "Rail ops demo feed"
         }
       ],
       "route_alerts": [
         {
-          "route": "Shanghai-Rotterdam",
-          "risk": 60,
-          "message": "Asia-Europe corridor still has thin schedule recovery margin"
+          "route": "Dadri Rail Terminal-Ahmedabad Rail Terminal",
+          "risk": 48,
+          "message": "North-west corridor recovery time is limited after a late inbound rake."
         }
       ],
-      "alternate_ports": ["Ningbo-Zhoushan", "Qingdao"],
+      "alternate_hubs": ["Mumbai Rail Freight Terminal", "Chennai Inland Rail Terminal"],
       "mitigations": [
-        "Hold booking flexibility for the next sailing if fog worsens."
+        "Pre-confirm wagon release timing before the inbound rake reaches the terminal."
       ]
     },
-    "Colombo": {
+    "Bengaluru Distribution Hub": {
+      "mode": "roadways",
+      "country": "India",
+      "region": "South India",
+      "weather": {
+        "condition": "Intermittent showers are slowing urban approach roads",
+        "severity": 49,
+        "wind_kph": 22,
+        "rain_mm": 9
+      },
+      "operations": {
+        "capacity_index": 68,
+        "wait_hours": 9,
+        "backlog": "High",
+        "metric_label": "traffic pressure",
+        "wait_label": "checkpoint"
+      },
+      "news": [
+        {
+          "headline": "Peak dispatch hour is extending gate-out times for trucks and buses",
+          "severity": 44,
+          "source": "Road ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai Logistics Park-Bengaluru Distribution Hub",
+          "risk": 65,
+          "message": "Western corridor traffic remains slow after multiple recovery diversions."
+        }
+      ],
+      "alternate_hubs": ["Hyderabad Van Hub", "Chennai Bus Terminal"],
+      "mitigations": [
+        "Keep a flexible unloading window ready for late-night arrivals."
+      ]
+    },
+    "Changi Air Cargo": {
+      "mode": "airways",
+      "country": "Singapore",
+      "region": "Southeast Asia",
+      "weather": {
+        "condition": "Scattered showers with normal runway visibility",
+        "severity": 29,
+        "wind_kph": 19,
+        "rain_mm": 5
+      },
+      "operations": {
+        "capacity_index": 43,
+        "wait_hours": 4,
+        "backlog": "Low",
+        "metric_label": "airside congestion",
+        "wait_label": "ground handling"
+      },
+      "news": [
+        {
+          "headline": "Cargo flows are stable with minor rain-related apron pauses",
+          "severity": 22,
+          "source": "Airport ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai Air Cargo-Changi Air Cargo",
+          "risk": 33,
+          "message": "The lane is operating within its normal recovery buffer."
+        }
+      ],
+      "alternate_hubs": ["Dubai International Cargo", "Frankfurt Air Cargo"],
+      "mitigations": [
+        "Keep transfer documents pre-cleared to preserve the current slot."
+      ]
+    },
+    "Chennai Bus Terminal": {
+      "mode": "roadways",
+      "country": "India",
+      "region": "South India",
+      "weather": {
+        "condition": "Humid evening weather with wet urban roads",
+        "severity": 37,
+        "wind_kph": 17,
+        "rain_mm": 6
+      },
+      "operations": {
+        "capacity_index": 59,
+        "wait_hours": 6,
+        "backlog": "Medium",
+        "metric_label": "terminal crowding",
+        "wait_label": "boarding gate"
+      },
+      "news": [
+        {
+          "headline": "Weekend departures are tightening stand allocation across the terminal",
+          "severity": 35,
+          "source": "Terminal ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Bengaluru Distribution Hub-Chennai Bus Terminal",
+          "risk": 54,
+          "message": "Approach traffic is reducing recovery margin for scheduled arrivals."
+        }
+      ],
+      "alternate_hubs": ["Hyderabad Van Hub", "Mumbai Logistics Park"],
+      "mitigations": [
+        "Hold a backup unloading bay for late arrivals during peak demand."
+      ]
+    },
+    "Chennai Inland Rail Terminal": {
+      "mode": "railways",
+      "country": "India",
+      "region": "South India",
+      "weather": {
+        "condition": "Hot conditions with low rainfall and stable yard visibility",
+        "severity": 27,
+        "wind_kph": 14,
+        "rain_mm": 0
+      },
+      "operations": {
+        "capacity_index": 62,
+        "wait_hours": 9,
+        "backlog": "Medium",
+        "metric_label": "terminal congestion",
+        "wait_label": "path allocation"
+      },
+      "news": [
+        {
+          "headline": "Intermodal handoff times remain moderate after morning inbound volume",
+          "severity": 31,
+          "source": "Rail ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Ahmedabad Rail Terminal-Chennai Inland Rail Terminal",
+          "risk": 58,
+          "message": "Long-haul corridor recovery remains limited after a late path release."
+        }
+      ],
+      "alternate_hubs": ["Mumbai Rail Freight Terminal", "Ahmedabad Rail Terminal"],
+      "mitigations": [
+        "Pre-book drayage at destination before the rake is assigned a final path."
+      ]
+    },
+    "Colombo Port": {
+      "mode": "waterways",
       "country": "Sri Lanka",
       "region": "South Asia",
       "weather": {
-        "condition": "Passing showers, normal port visibility",
-        "severity": 42,
-        "wind_kph": 24,
-        "rain_mm": 8
+        "condition": "Passing showers with steady harbor visibility",
+        "severity": 38,
+        "wind_kph": 21,
+        "rain_mm": 7
       },
-      "port": {
-        "congestion_index": 55,
-        "berth_wait_hours": 9,
-        "customs_backlog": "Low"
+      "operations": {
+        "capacity_index": 51,
+        "wait_hours": 8,
+        "backlog": "Low",
+        "metric_label": "berth congestion",
+        "wait_label": "berth assignment"
       },
       "news": [
         {
-          "headline": "Transshipment stack density is moderate after weekend arrivals",
-          "severity": 37,
-          "source": "Port ops demo feed"
+          "headline": "Harbor activity is stable with moderate transfer volume",
+          "severity": 29,
+          "source": "Marine ops demo feed"
         }
       ],
       "route_alerts": [
         {
-          "route": "Mumbai-Colombo",
-          "risk": 38,
-          "message": "Route is operating within normal buffer"
+          "route": "Singapore Cruise Centre-Colombo Port",
+          "risk": 41,
+          "message": "Arrival sequencing is slightly compressed after weather drift in the corridor."
         }
       ],
-      "alternate_ports": ["Tuticorin", "Singapore"],
+      "alternate_hubs": ["Mumbai Cruise Terminal", "Singapore Cruise Centre"],
       "mitigations": [
-        "Keep feeder confirmation active until discharge is complete."
+        "Keep local transfer support on standby until the berth time is confirmed."
       ]
     },
-    "Salalah": {
-      "country": "Oman",
-      "region": "Gulf",
+    "Dadri Rail Terminal": {
+      "mode": "railways",
+      "country": "India",
+      "region": "North India",
       "weather": {
-        "condition": "Moderate coastal wind and haze",
-        "severity": 48,
-        "wind_kph": 34,
-        "rain_mm": 1
+        "condition": "Dry corridor conditions with moderate dust near the terminal",
+        "severity": 34,
+        "wind_kph": 20,
+        "rain_mm": 0
       },
-      "port": {
-        "congestion_index": 60,
-        "berth_wait_hours": 12,
-        "customs_backlog": "Medium"
+      "operations": {
+        "capacity_index": 66,
+        "wait_hours": 10,
+        "backlog": "High",
+        "metric_label": "terminal congestion",
+        "wait_label": "path allocation"
       },
       "news": [
         {
-          "headline": "Regional transshipment volume remains above normal",
-          "severity": 46,
-          "source": "Port ops demo feed"
+          "headline": "Terminal pathing is tighter after stacked inbound freight movements",
+          "severity": 43,
+          "source": "Rail ops demo feed"
         }
       ],
       "route_alerts": [
         {
-          "route": "Chennai-Salalah",
-          "risk": 52,
-          "message": "Sailing has limited recovery time after prior port call"
+          "route": "Dadri Rail Terminal-Mumbai Rail Freight Terminal",
+          "risk": 61,
+          "message": "The north-west corridor is carrying a thin recovery window after yesterday's bunching."
         }
       ],
-      "alternate_ports": ["Sohar Port", "Jebel Ali"],
+      "alternate_hubs": ["Ahmedabad Rail Terminal", "Chennai Inland Rail Terminal"],
       "mitigations": [
-        "Confirm connecting feeder cutoff before vessel arrival."
+        "Confirm the departure path and last-mile window before sealing the rake plan."
       ]
     },
-    "Khalifa Port": {
+    "Dubai Harbour Cruise Terminal": {
+      "mode": "waterways",
       "country": "UAE",
       "region": "Gulf",
       "weather": {
-        "condition": "Clear approach with light crosswinds",
-        "severity": 36,
-        "wind_kph": 21,
-        "rain_mm": 0
+        "condition": "Warm coastal winds with light haze on the approach",
+        "severity": 46,
+        "wind_kph": 29,
+        "rain_mm": 1
       },
-      "port": {
-        "congestion_index": 42,
-        "berth_wait_hours": 7,
-        "customs_backlog": "Low"
+      "operations": {
+        "capacity_index": 64,
+        "wait_hours": 11,
+        "backlog": "Medium",
+        "metric_label": "pier congestion",
+        "wait_label": "berth assignment"
       },
       "news": [
         {
-          "headline": "Terminal capacity is available for selected alternate discharge cases",
-          "severity": 26,
-          "source": "Port ops demo feed"
+          "headline": "Cruise turnaround crews are operating on a compressed window today",
+          "severity": 47,
+          "source": "Cruise ops demo feed"
         }
       ],
       "route_alerts": [
         {
-          "route": "Mumbai-Khalifa Port",
-          "risk": 30,
-          "message": "Alternate UAE corridor has available buffer"
+          "route": "Mumbai Cruise Terminal-Dubai Harbour Cruise Terminal",
+          "risk": 67,
+          "message": "Turnaround buffers are tight on the Mumbai-Dubai cruise lane."
         }
       ],
-      "alternate_ports": ["Jebel Ali", "Sohar Port"],
+      "alternate_hubs": ["Jebel Ali Port", "Singapore Cruise Centre"],
       "mitigations": [
-        "Use as first alternate if Jebel Ali berth delay exceeds 18 hours."
+        "Pre-stage landside transfer teams in case the berth assignment moves late."
+      ]
+    },
+    "Dubai International Cargo": {
+      "mode": "airways",
+      "country": "UAE",
+      "region": "Gulf",
+      "weather": {
+        "condition": "Dust haze and gusty crosswinds near the cargo apron",
+        "severity": 63,
+        "wind_kph": 35,
+        "rain_mm": 1
+      },
+      "operations": {
+        "capacity_index": 74,
+        "wait_hours": 8,
+        "backlog": "High",
+        "metric_label": "airside congestion",
+        "wait_label": "ground handling"
+      },
+      "news": [
+        {
+          "headline": "Ramp teams are sequencing late-arriving flights through a compressed handling window",
+          "severity": 55,
+          "source": "Airport ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai Air Cargo-Dubai International Cargo",
+          "risk": 69,
+          "message": "Short-haul uplift buffers are tight after apron congestion built up this morning."
+        }
+      ],
+      "alternate_hubs": ["Changi Air Cargo", "Frankfurt Air Cargo"],
+      "mitigations": [
+        "Request a standby handling slot before the flight departs origin."
+      ]
+    },
+    "Frankfurt Air Cargo": {
+      "mode": "airways",
+      "country": "Germany",
+      "region": "Europe",
+      "weather": {
+        "condition": "Cool winds and wet apron conditions",
+        "severity": 48,
+        "wind_kph": 27,
+        "rain_mm": 8
+      },
+      "operations": {
+        "capacity_index": 58,
+        "wait_hours": 6,
+        "backlog": "Medium",
+        "metric_label": "airside congestion",
+        "wait_label": "ground handling"
+      },
+      "news": [
+        {
+          "headline": "Recovery buffers remain thin for several Europe-bound cargo banks",
+          "severity": 42,
+          "source": "Airport ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Dubai International Cargo-Frankfurt Air Cargo",
+          "risk": 57,
+          "message": "Europe lane recovery is limited after earlier apron delays."
+        }
+      ],
+      "alternate_hubs": ["Changi Air Cargo", "Dubai International Cargo"],
+      "mitigations": [
+        "Keep customs release and trucking slots flexible until touchdown is confirmed."
+      ]
+    },
+    "Hyderabad Van Hub": {
+      "mode": "roadways",
+      "country": "India",
+      "region": "South India",
+      "weather": {
+        "condition": "Warm weather with generally clear route visibility",
+        "severity": 24,
+        "wind_kph": 13,
+        "rain_mm": 0
+      },
+      "operations": {
+        "capacity_index": 41,
+        "wait_hours": 4,
+        "backlog": "Low",
+        "metric_label": "dispatch pressure",
+        "wait_label": "loading dock"
+      },
+      "news": [
+        {
+          "headline": "Van dispatch remains steady with normal hub processing times",
+          "severity": 18,
+          "source": "Road ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Chennai Bus Terminal-Hyderabad Van Hub",
+          "risk": 28,
+          "message": "The lane is running close to plan with only small checkpoint variation."
+        }
+      ],
+      "alternate_hubs": ["Bengaluru Distribution Hub", "Mumbai Logistics Park"],
+      "mitigations": [
+        "Keep the final-mile van wave aligned with the current ETA to avoid dock bunching."
+      ]
+    },
+    "Jebel Ali Port": {
+      "mode": "waterways",
+      "country": "UAE",
+      "region": "Gulf",
+      "weather": {
+        "condition": "Coastal winds with dust haze near the approach",
+        "severity": 61,
+        "wind_kph": 37,
+        "rain_mm": 2
+      },
+      "operations": {
+        "capacity_index": 76,
+        "wait_hours": 15,
+        "backlog": "High",
+        "metric_label": "berth congestion",
+        "wait_label": "berth assignment"
+      },
+      "news": [
+        {
+          "headline": "High berth utilization is compressing recovery time for inbound vessels",
+          "severity": 58,
+          "source": "Marine ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai Cruise Terminal-Jebel Ali Port",
+          "risk": 71,
+          "message": "Gulf arrivals are seeing berth spillover after the previous sailing window tightened."
+        }
+      ],
+      "alternate_hubs": ["Dubai Harbour Cruise Terminal", "Colombo Port"],
+      "mitigations": [
+        "Keep an alternate discharge or cruise support option available for the next 24 hours."
+      ]
+    },
+    "Mumbai Air Cargo": {
+      "mode": "airways",
+      "country": "India",
+      "region": "West India",
+      "weather": {
+        "condition": "Humid apron conditions with manageable crosswinds",
+        "severity": 35,
+        "wind_kph": 16,
+        "rain_mm": 3
+      },
+      "operations": {
+        "capacity_index": 52,
+        "wait_hours": 5,
+        "backlog": "Medium",
+        "metric_label": "airside congestion",
+        "wait_label": "ground handling"
+      },
+      "news": [
+        {
+          "headline": "Morning uplift banks are stable after a short handling backlog was cleared",
+          "severity": 29,
+          "source": "Airport ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Changi Air Cargo-Mumbai Air Cargo",
+          "risk": 35,
+          "message": "Inbound handling remains stable with minor weather-linked slowdown."
+        }
+      ],
+      "alternate_hubs": ["Dubai International Cargo", "Changi Air Cargo"],
+      "mitigations": [
+        "Lock receiving truck slots before the inbound flight lands."
+      ]
+    },
+    "Mumbai Cruise Terminal": {
+      "mode": "waterways",
+      "country": "India",
+      "region": "West India",
+      "weather": {
+        "condition": "Humid harbor weather with occasional rain bursts",
+        "severity": 44,
+        "wind_kph": 24,
+        "rain_mm": 7
+      },
+      "operations": {
+        "capacity_index": 57,
+        "wait_hours": 9,
+        "backlog": "Medium",
+        "metric_label": "pier congestion",
+        "wait_label": "berth assignment"
+      },
+      "news": [
+        {
+          "headline": "Passenger handling remains orderly, but evening turnaround buffers are tighter than usual",
+          "severity": 36,
+          "source": "Cruise ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Colombo Port-Mumbai Cruise Terminal",
+          "risk": 39,
+          "message": "The inbound cruise lane is mostly stable with minor harbor sequencing pressure."
+        }
+      ],
+      "alternate_hubs": ["Colombo Port", "Singapore Cruise Centre"],
+      "mitigations": [
+        "Keep guest transfer and provisioning support on standby until final berthing is confirmed."
+      ]
+    },
+    "Mumbai Logistics Park": {
+      "mode": "roadways",
+      "country": "India",
+      "region": "West India",
+      "weather": {
+        "condition": "Humid weather with steady visibility on the access roads",
+        "severity": 31,
+        "wind_kph": 14,
+        "rain_mm": 2
+      },
+      "operations": {
+        "capacity_index": 64,
+        "wait_hours": 8,
+        "backlog": "Medium",
+        "metric_label": "dock pressure",
+        "wait_label": "loading dock"
+      },
+      "news": [
+        {
+          "headline": "Peak dispatch volume is extending dock turnarounds for heavy vehicles",
+          "severity": 39,
+          "source": "Road ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Bengaluru Distribution Hub-Mumbai Logistics Park",
+          "risk": 63,
+          "message": "Inbound traffic is narrowing the recovery margin on the Bengaluru-Mumbai lane."
+        }
+      ],
+      "alternate_hubs": ["Hyderabad Van Hub", "Chennai Bus Terminal"],
+      "mitigations": [
+        "Stage an alternate unloading dock and keep traffic reroute guidance ready."
+      ]
+    },
+    "Mumbai Rail Freight Terminal": {
+      "mode": "railways",
+      "country": "India",
+      "region": "West India",
+      "weather": {
+        "condition": "Warm yard conditions with no rainfall impact",
+        "severity": 24,
+        "wind_kph": 12,
+        "rain_mm": 0
+      },
+      "operations": {
+        "capacity_index": 61,
+        "wait_hours": 8,
+        "backlog": "Medium",
+        "metric_label": "terminal congestion",
+        "wait_label": "path allocation"
+      },
+      "news": [
+        {
+          "headline": "Terminal crews are balancing inbound wagon recovery with normal departure volume",
+          "severity": 33,
+          "source": "Rail ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Dadri Rail Terminal-Mumbai Rail Freight Terminal",
+          "risk": 59,
+          "message": "Recovery slack on the trunk corridor is thin after two late departures."
+        }
+      ],
+      "alternate_hubs": ["Ahmedabad Rail Terminal", "Chennai Inland Rail Terminal"],
+      "mitigations": [
+        "Keep drayage and unloading capacity aligned with the revised path plan."
+      ]
+    },
+    "Singapore Cruise Centre": {
+      "mode": "waterways",
+      "country": "Singapore",
+      "region": "Southeast Asia",
+      "weather": {
+        "condition": "Passing showers with good harbor visibility",
+        "severity": 33,
+        "wind_kph": 18,
+        "rain_mm": 5
+      },
+      "operations": {
+        "capacity_index": 46,
+        "wait_hours": 6,
+        "backlog": "Low",
+        "metric_label": "pier congestion",
+        "wait_label": "berth assignment"
+      },
+      "news": [
+        {
+          "headline": "Turnaround windows remain stable with minor weather interruptions",
+          "severity": 24,
+          "source": "Cruise ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai Cruise Terminal-Singapore Cruise Centre",
+          "risk": 46,
+          "message": "The long-haul cruise lane has a modest weather-linked buffer reduction."
+        }
+      ],
+      "alternate_hubs": ["Colombo Port", "Dubai Harbour Cruise Terminal"],
+      "mitigations": [
+        "Keep turnaround documents ready so the berth window can be protected."
       ]
     }
   }

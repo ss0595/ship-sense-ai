@@ -1,31 +1,27 @@
-shipment_id,origin,destination_port,carrier,route,cargo_type,eta_days,weather_severity,congestion_index,news_alert_level,delayed,delay_hours
-SHP-1041,Mumbai,Jebel Ali,GulfLink,Mumbai-Jebel Ali,Electronics,3,62,74,55,true,19
-SHP-1040,Chennai,Jebel Ali,BlueWave,Chennai-Jebel Ali,Pharma,4,58,68,42,true,14
-SHP-1039,Mumbai,Jebel Ali,GulfLink,Mumbai-Jebel Ali,Apparel,5,35,52,24,false,0
-SHP-1038,Cochin,Jebel Ali,OceanPeak,Cochin-Jebel Ali,Cold Chain,3,71,70,48,true,24
-SHP-1037,Shanghai,Jebel Ali,BlueWave,Shanghai-Jebel Ali,Machinery,8,44,63,30,false,0
-SHP-1036,Mumbai,Jebel Ali,HarborOne,Mumbai-Jebel Ali,Electronics,2,68,77,60,true,31
-SHP-1035,Colombo,Jebel Ali,GulfLink,Colombo-Jebel Ali,Apparel,4,55,71,57,true,16
-SHP-1034,Nhava Sheva,Jebel Ali,GulfLink,Nhava Sheva-Jebel Ali,Automotive,3,61,75,50,true,21
-SHP-1033,Mumbai,Singapore,BlueWave,Mumbai-Singapore,Electronics,6,25,41,20,false,0
-SHP-1032,Shanghai,Singapore,OceanPeak,Shanghai-Singapore,Pharma,4,31,44,16,false,0
-SHP-1031,Colombo,Singapore,GulfLink,Colombo-Singapore,Apparel,3,36,48,22,false,0
-SHP-1030,Rotterdam,Singapore,HarborOne,Rotterdam-Singapore,Machinery,12,45,52,36,true,9
-SHP-1029,Shanghai,Rotterdam,BlueWave,Shanghai-Rotterdam,Machinery,18,64,69,58,true,27
-SHP-1028,Singapore,Rotterdam,OceanPeak,Singapore-Rotterdam,Electronics,17,59,65,48,true,18
-SHP-1027,Chennai,Rotterdam,HarborOne,Chennai-Rotterdam,Pharma,21,42,54,32,false,0
-SHP-1026,Mumbai,Nhava Sheva,InlandPlus,Mumbai-Nhava Sheva,Automotive,1,28,58,22,false,0
-SHP-1025,Mundra,Nhava Sheva,InlandPlus,Mundra-Nhava Sheva,Electronics,2,30,64,35,true,8
-SHP-1024,Ahmedabad,Nhava Sheva,HarborOne,Ahmedabad-Nhava Sheva,Apparel,2,35,61,31,true,7
-SHP-1023,Shanghai,Colombo,BlueWave,Shanghai-Colombo,Electronics,7,54,57,46,true,12
-SHP-1022,Singapore,Colombo,GulfLink,Singapore-Colombo,Cold Chain,5,49,50,38,false,0
-SHP-1021,Mumbai,Colombo,OceanPeak,Mumbai-Colombo,Apparel,4,40,55,33,false,0
-SHP-1020,Shanghai,Salalah,BlueWave,Shanghai-Salalah,Machinery,12,52,59,52,true,17
-SHP-1019,Mumbai,Salalah,GulfLink,Mumbai-Salalah,Electronics,5,47,53,44,false,0
-SHP-1018,Chennai,Salalah,OceanPeak,Chennai-Salalah,Pharma,6,50,62,50,true,13
-SHP-1017,Mumbai,Khalifa Port,GulfLink,Mumbai-Khalifa Port,Electronics,3,42,40,27,false,0
-SHP-1016,Shanghai,Khalifa Port,BlueWave,Shanghai-Khalifa Port,Machinery,9,39,42,24,false,0
-SHP-1015,Cochin,Khalifa Port,OceanPeak,Cochin-Khalifa Port,Cold Chain,4,45,45,28,false,0
-SHP-1014,Nhava Sheva,Jebel Ali,BlueWave,Nhava Sheva-Jebel Ali,Pharma,3,72,79,63,true,29
-SHP-1013,Mumbai,Jebel Ali,GulfLink,Mumbai-Jebel Ali,Pharma,3,74,81,65,true,35
-SHP-1012,Mumbai,Jebel Ali,GulfLink,Mumbai-Jebel Ali,Electronics,6,34,49,28,false,0
+shipment_id,transport_mode,vehicle_type,origin,destination_hub,carrier,route,cargo_type,eta_days,weather_severity,congestion_index,news_alert_level,delayed,delay_hours
+TRN-2041,waterways,Cruise,Mumbai Cruise Terminal,Dubai Harbour Cruise Terminal,HarborOne,Mumbai Cruise Terminal-Dubai Harbour Cruise Terminal,Hospitality Supplies,4,58,67,49,true,18
+TRN-2040,waterways,Cargo Vessel,Mumbai Cruise Terminal,Jebel Ali Port,GulfLink,Mumbai Cruise Terminal-Jebel Ali Port,Electronics,3,61,74,56,true,16
+TRN-2039,waterways,Cruise,Singapore Cruise Centre,Colombo Port,BlueWave,Singapore Cruise Centre-Colombo Port,Guest Baggage,5,34,42,26,false,0
+TRN-2038,waterways,Cargo Vessel,Colombo Port,Jebel Ali Port,OceanPeak,Colombo Port-Jebel Ali Port,Apparel,6,47,63,44,true,11
+TRN-2037,waterways,Cargo Vessel,Jebel Ali Port,Singapore Cruise Centre,GulfLink,Jebel Ali Port-Singapore Cruise Centre,Automotive,9,39,50,28,false,0
+TRN-2036,waterways,Cruise,Mumbai Cruise Terminal,Singapore Cruise Centre,HarborOne,Mumbai Cruise Terminal-Singapore Cruise Centre,Cold Chain,7,66,59,47,true,22
+TRN-2035,waterways,Cruise,Colombo Port,Mumbai Cruise Terminal,BlueWave,Colombo Port-Mumbai Cruise Terminal,Hospitality Supplies,4,32,38,24,false,0
+TRN-2034,waterways,Cruise,Jebel Ali Port,Mumbai Cruise Terminal,OceanPeak,Jebel Ali Port-Mumbai Cruise Terminal,Guest Baggage,5,43,54,31,true,9
+TRN-2033,airways,Cargo Aircraft,Mumbai Air Cargo,Dubai International Cargo,Emirates SkyCargo,Mumbai Air Cargo-Dubai International Cargo,Electronics,2,57,71,53,true,10
+TRN-2032,airways,Cargo Aircraft,Changi Air Cargo,Frankfurt Air Cargo,SkyBridge Cargo,Changi Air Cargo-Frankfurt Air Cargo,Pharma,3,28,39,18,false,0
+TRN-2031,airways,Charter Flight,Frankfurt Air Cargo,Dubai International Cargo,Falcon Wings,Frankfurt Air Cargo-Dubai International Cargo,Machinery,2,52,65,46,true,7
+TRN-2030,airways,Cargo Aircraft,Mumbai Air Cargo,Changi Air Cargo,AirLift Express,Mumbai Air Cargo-Changi Air Cargo,Cold Chain,4,31,44,20,false,0
+TRN-2029,airways,Cargo Aircraft,Dubai International Cargo,Frankfurt Air Cargo,Emirates SkyCargo,Dubai International Cargo-Frankfurt Air Cargo,Electronics,3,49,58,39,true,8
+TRN-2028,airways,Charter Flight,Changi Air Cargo,Mumbai Air Cargo,Falcon Wings,Changi Air Cargo-Mumbai Air Cargo,Apparel,4,26,33,19,false,0
+TRN-2027,roadways,Truck,Mumbai Logistics Park,Bengaluru Distribution Hub,HighwayGo,Mumbai Logistics Park-Bengaluru Distribution Hub,Electronics,3,41,73,48,true,12
+TRN-2026,roadways,Bus,Bengaluru Distribution Hub,Chennai Bus Terminal,MetroBus,Bengaluru Distribution Hub-Chennai Bus Terminal,Guest Baggage,2,33,62,36,true,6
+TRN-2025,roadways,Van,Chennai Bus Terminal,Hyderabad Van Hub,SwiftVan,Chennai Bus Terminal-Hyderabad Van Hub,Pharma,2,24,37,18,false,0
+TRN-2024,roadways,Van,Hyderabad Van Hub,Mumbai Logistics Park,RoadPulse,Hyderabad Van Hub-Mumbai Logistics Park,Apparel,3,29,51,34,true,5
+TRN-2023,roadways,Truck,Mumbai Logistics Park,Chennai Bus Terminal,HighwayGo,Mumbai Logistics Park-Chennai Bus Terminal,Automotive,4,36,46,24,false,0
+TRN-2022,roadways,Truck,Bengaluru Distribution Hub,Mumbai Logistics Park,RoadPulse,Bengaluru Distribution Hub-Mumbai Logistics Park,Machinery,4,44,76,41,true,14
+TRN-2021,railways,Freight Train,Dadri Rail Terminal,Mumbai Rail Freight Terminal,RailBridge,Dadri Rail Terminal-Mumbai Rail Freight Terminal,Electronics,5,38,68,42,true,13
+TRN-2020,railways,Freight Train,Mumbai Rail Freight Terminal,Ahmedabad Rail Terminal,CorridorExpress,Mumbai Rail Freight Terminal-Ahmedabad Rail Terminal,Automotive,3,25,41,22,false,0
+TRN-2019,railways,Freight Train,Ahmedabad Rail Terminal,Chennai Inland Rail Terminal,FreightRail,Ahmedabad Rail Terminal-Chennai Inland Rail Terminal,Machinery,6,46,72,47,true,15
+TRN-2018,railways,Express Rail,Chennai Inland Rail Terminal,Dadri Rail Terminal,InlandLink,Chennai Inland Rail Terminal-Dadri Rail Terminal,Apparel,5,21,39,20,false,0
+TRN-2017,railways,Freight Train,Dadri Rail Terminal,Ahmedabad Rail Terminal,RailBridge,Dadri Rail Terminal-Ahmedabad Rail Terminal,Pharma,4,37,63,40,true,9
+TRN-2016,railways,Express Rail,Mumbai Rail Freight Terminal,Chennai Inland Rail Terminal,CorridorExpress,Mumbai Rail Freight Terminal-Chennai Inland Rail Terminal,Cold Chain,5,28,45,27,false,0

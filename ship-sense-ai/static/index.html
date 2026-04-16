@@ -3,44 +3,80 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ShipSense AI - Predictive Delay Agent</title>
-    <link rel="stylesheet" href="/styles.css?v=16">
+    <title>ShipSense AI - Multimodal Delay Agent</title>
+    <link rel="stylesheet" href="/styles.css?v=24">
   </head>
   <body>
     <section class="login-screen" id="login-screen">
-      <form class="login-card" id="login-form">
-        <div class="brand login-brand">
-          <span class="brand-mark">SS</span>
-          <div>
-            <strong>ShipSense AI</strong>
-            <span>Mandatory secure access</span>
+      <div class="login-shell">
+        <section class="login-story" aria-label="ShipSense overview">
+          <div class="brand login-brand">
+            <span class="brand-mark">SS</span>
+            <div>
+              <strong>ShipSense AI</strong>
+              <span>Multimodal delay control tower</span>
+            </div>
           </div>
-        </div>
-        <p class="eyebrow">Platform security</p>
-        <h1 id="auth-title">Sign in to the control tower</h1>
-        <label id="display-name-field" hidden>
-          Display name
-          <input id="signup-display-name" name="display_name" autocomplete="name" value="New Analyst">
-        </label>
-        <label>
-          User ID
-          <input id="login-username" name="username" autocomplete="username" placeholder="Enter your user ID">
-        </label>
-        <label>
-          Password
-          <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password">
-        </label>
-        <label id="otp-field" hidden>
-          OTP code
-          <input id="login-otp" name="otp" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter 6 digit OTP">
-        </label>
-        <div class="validation-warning" id="otp-demo-box" hidden></div>
-        <p class="login-note" id="login-note">Demo users are listed in the README. Dashboard API calls use secure access and refresh cookies after login.</p>
-        <div class="validation-warning" id="login-error" hidden></div>
-        <button type="submit" id="login-button">Login</button>
-        <button class="secondary-button" type="button" id="auth-mode-button">Create a new account</button>
-        <button class="secondary-button" type="button" id="google-login-button">Continue with Google demo</button>
-      </form>
+          <p class="eyebrow">Operational intelligence</p>
+          <h1>Stay ahead of disruption across every transport network.</h1>
+          <p class="story-lead">Anticipate delay exposure across air, road, rail, and water with explainable scoring, governed access, and action-ready mitigation plans.</p>
+          <div class="story-grid">
+            <article class="story-card">
+              <span>Coverage</span>
+              <strong>Air, road, rail, and water</strong>
+              <p>One risk desk for cargo, fleet, cruise, and intermodal operations.</p>
+            </article>
+            <article class="story-card">
+              <span>Evidence</span>
+              <strong>History plus live operating signals</strong>
+              <p>Each assessment balances movement memory, hub pressure, route timing, and external context.</p>
+            </article>
+            <article class="story-card">
+              <span>Security</span>
+              <strong>OTP access with RBAC</strong>
+              <p>Analysts move fast while admin roles retain control, auditability, and observability.</p>
+            </article>
+          </div>
+        </section>
+
+        <form class="login-card" id="login-form">
+          <div class="brand login-brand">
+            <span class="brand-mark">SS</span>
+            <div>
+              <strong>ShipSense AI</strong>
+              <span>Mandatory secure access</span>
+            </div>
+          </div>
+          <p class="eyebrow">Platform security</p>
+          <h1 id="auth-title">Sign in to the control tower</h1>
+          <label id="display-name-field" hidden>
+            Display name
+            <input id="signup-display-name" name="display_name" autocomplete="name" placeholder="Enter your display name">
+          </label>
+          <label id="email-field" hidden>
+            Email address
+            <input id="signup-email" name="email" type="email" autocomplete="email" placeholder="Enter your email address">
+          </label>
+          <label>
+            User ID
+            <input id="login-username" name="username" autocomplete="username" placeholder="Enter your user ID">
+          </label>
+          <label>
+            Password
+            <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password">
+          </label>
+          <label id="otp-field" hidden>
+            OTP code
+            <input id="login-otp" name="otp" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter 6 digit OTP">
+          </label>
+          <div class="validation-warning" id="otp-demo-box" hidden></div>
+          <p class="login-note" id="login-note">Sign in with your user ID and password, or continue with Google. New accounts require an email address so ShipSense can send the OTP through SMTP email.</p>
+          <div class="validation-warning" id="login-error" hidden></div>
+          <button type="submit" id="login-button">Login</button>
+          <button class="secondary-button" type="button" id="auth-mode-button">Create a new account</button>
+          <button class="secondary-button" type="button" id="google-login-button">Continue with Google</button>
+        </form>
+      </div>
     </section>
 
     <div class="app-shell" id="app-shell" hidden>
@@ -49,7 +85,7 @@
           <span class="brand-mark">SS</span>
           <div>
             <strong>ShipSense AI</strong>
-            <span>Delay risk agent</span>
+            <span>Multimodal delay agent</span>
           </div>
         </div>
         <nav class="nav-list">
@@ -68,9 +104,10 @@
 
       <main class="workspace">
         <header class="topbar">
-          <div>
+          <div class="topbar-copy">
             <p class="eyebrow">Predictive Delay and Risk Intelligence Agent</p>
-            <h1>Shipment risk control tower</h1>
+            <h1>Multimodal risk control tower</h1>
+            <p>Monitor route exposure, understand what is driving the score, and move early with safer operating decisions.</p>
           </div>
           <div class="topbar-meta">
             <span id="api-status">Connecting</span>
@@ -80,39 +117,65 @@
           </div>
         </header>
 
+        <section class="overview-strip" aria-label="Operational overview">
+          <article class="overview-card">
+            <p class="eyebrow">Network coverage</p>
+            <h2>Four active transport lanes</h2>
+            <p>Air, road, rail, and water movements share one decision layer with mode-aware hubs, carriers, and fallback routes.</p>
+          </article>
+          <article class="overview-card">
+            <p class="eyebrow">Decision quality</p>
+            <h2>Explainable scoring</h2>
+            <p>Each recommendation is grounded in historical behavior, hub conditions, route timing, and signal-supported evidence.</p>
+          </article>
+          <article class="overview-card">
+            <p class="eyebrow">Governance</p>
+            <h2>Secure by default</h2>
+            <p>OTP access, role-based privileges, audit visibility, and async processing keep the platform presentation-ready and operations-ready.</p>
+          </article>
+        </section>
+
         <section class="risk-layout" id="risk">
           <form class="panel query-panel" id="risk-form">
             <div class="panel-heading">
               <p class="eyebrow">Ask the agent</p>
-              <h2>Identify delay risks</h2>
+              <h2>Identify transport delay risks</h2>
+              <p class="panel-copy">Describe the movement in natural language or complete the operating fields for a fully structured assessment.</p>
+            </div>
+
+            <div class="panel-meta" aria-label="Analysis scope">
+              <span>Explainable scoring</span>
+              <span>Mode-aware routing</span>
+              <span>Async-ready workflow</span>
             </div>
 
             <label for="query">Natural language input</label>
-            <textarea id="query" name="query" rows="4" placeholder="Describe the shipment or fill the fields below"></textarea>
+            <textarea id="query" name="query" rows="4" placeholder="Describe a flight, truck lane, cruise arrival, or rail movement, or fill the fields below"></textarea>
 
             <div class="field-grid">
               <label>
-                Destination port
-                <select id="destination_port" name="destination_port"></select>
+                Transport mode
+                <select id="transport_mode" name="transport_mode"></select>
+              </label>
+              <label>
+                Vehicle type
+                <select id="vehicle_type" name="vehicle_type"></select>
+              </label>
+              <label>
+                Destination hub
+                <select id="destination_hub" name="destination_hub"></select>
               </label>
               <label>
                 Arrival in days
                 <input id="arrival_days" name="arrival_days" type="number" min="0" max="45" placeholder="Enter ETA in days">
               </label>
               <label>
-                Origin port
+                Origin hub
                 <select id="origin" name="origin"></select>
               </label>
               <label>
-                Carrier
-                <select id="carrier" name="carrier">
-                  <option value="" selected disabled>Select carrier</option>
-                  <option>GulfLink</option>
-                  <option>BlueWave</option>
-                  <option>OceanPeak</option>
-                  <option>HarborOne</option>
-                  <option>InlandPlus</option>
-                </select>
+                Carrier or operator
+                <select id="carrier" name="carrier"></select>
               </label>
               <label>
                 Cargo type
@@ -124,6 +187,9 @@
                   <option>Apparel</option>
                   <option>Automotive</option>
                   <option>Machinery</option>
+                  <option>Hospitality Supplies</option>
+                  <option>Guest Baggage</option>
+                  <option>Retail Parcels</option>
                 </select>
               </label>
               <label>
@@ -137,8 +203,10 @@
               </label>
             </div>
 
-            <button type="submit" id="analyze-button">Analyze shipment</button>
-            <button class="secondary-button" type="button" id="queue-button">Queue async analysis</button>
+            <div class="form-actions">
+              <button type="submit" id="analyze-button">Analyze shipment</button>
+              <button class="secondary-button" type="button" id="queue-button">Queue async analysis</button>
+            </div>
             <div class="validation-warning" id="job-status" hidden></div>
           </form>
 
@@ -146,6 +214,7 @@
             <div class="panel-heading">
               <p class="eyebrow">Current assessment</p>
               <h2 id="risk-title">Awaiting analysis</h2>
+              <p class="panel-copy">The operating brief updates here with severity, evidence, confidence, and route context.</p>
             </div>
             <div class="score-wrap">
               <div class="risk-gauge" id="risk-gauge">
@@ -153,7 +222,7 @@
                 <small>risk score</small>
               </div>
               <div class="score-copy">
-                <p id="risk-explanation">Run the agent to calculate delay probability and mitigation actions.</p>
+                <p id="risk-explanation">Run the agent to calculate delay probability and multimodal mitigation actions.</p>
                 <dl>
                   <div>
                     <dt>Delay probability</dt>
@@ -176,13 +245,27 @@
         </section>
 
         <section class="signal-band" id="signals">
-          <img
-            src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1100&q=80"
-            alt="Container port with stacked freight containers"
-          >
+          <div class="transport-collage" aria-label="Multimodal transport collage showing air, road, rail, and maritime logistics">
+            <img
+              src="https://images.unsplash.com/photo-1747751995304-ed5311132c2e?auto=format&fit=crop&w=1200&q=80"
+              alt="Cargo aircraft on the ground"
+            >
+            <img
+              src="https://images.unsplash.com/photo-1767336455449-d490de078da5?auto=format&fit=crop&w=1200&q=80"
+              alt="Truck driving on a highway"
+            >
+            <img
+              src="https://images.unsplash.com/photo-1768813387248-9d46c8a515f1?auto=format&fit=crop&w=1200&q=80"
+              alt="Freight train moving through the landscape"
+            >
+            <img
+              src="https://images.unsplash.com/photo-1770738233519-a7c306c74736?auto=format&fit=crop&w=1200&q=80"
+              alt="Container ship docked at a port"
+            >
+          </div>
           <div>
             <p class="eyebrow">AI-assisted signal fusion</p>
-            <h2 id="signal-title">Historical shipments + operations signals + OpenAI explanation</h2>
+            <h2 id="signal-title">Historical movements + hub signals + OpenAI explanation</h2>
             <p id="signal-summary">The agent turns the score, factors, and mitigation evidence into a clear decision brief.</p>
           </div>
         </section>
@@ -191,17 +274,17 @@
           <article>
             <p class="eyebrow">DeepFrog fit</p>
             <h2>Agentic logistics intelligence</h2>
-            <p>Built for mission-critical shipment operations where teams need early warnings, clear evidence, and proactive action.</p>
+            <p>Built for mission-critical transport operations where teams need early warnings, clear evidence, and proactive action across air, road, rail, and marine networks.</p>
           </article>
           <article>
             <p class="eyebrow">R&D principle</p>
             <h2>Explainable before complex</h2>
-            <p>Every score is broken into history, congestion, route, timing, and signal factors before OpenAI writes the final explanation.</p>
+            <p>Every score is broken into history, hub pressure, route, timing, and signal factors before OpenAI writes the final explanation.</p>
           </article>
           <article>
             <p class="eyebrow">Production path</p>
             <h2>Ready for real feeds</h2>
-            <p>The demo CSV and JSON feeds can be replaced with TMS data, port signals, carrier schedules, and controlled enterprise APIs.</p>
+            <p>The demo CSV and JSON feeds can be replaced with TMS data, airport signals, rail network feeds, fleet telemetry, cruise schedules, and controlled enterprise APIs.</p>
           </article>
         </section>
 
@@ -235,7 +318,7 @@
           <div class="panel-heading table-heading">
             <div>
               <p class="eyebrow">Operational memory</p>
-              <h2>Recent historical shipments</h2>
+              <h2>Recent historical movements</h2>
             </div>
             <span id="signal-updated">Feed not loaded</span>
           </div>
@@ -244,8 +327,9 @@
               <thead>
                 <tr>
                   <th>Shipment</th>
+                  <th>Mode</th>
                   <th>Route</th>
-                  <th>Cargo</th>
+                  <th>Vehicle</th>
                   <th>Carrier</th>
                   <th>Status</th>
                   <th>Delay</th>
@@ -273,9 +357,107 @@
             <p id="blue-status">Google SSO demo, async jobs, two workers, idempotency, and Minikube manifests are ready.</p>
           </article>
         </section>
+
+        <section class="admin-shell" id="admin-console" hidden>
+          <div class="panel-heading admin-header">
+            <div>
+              <p class="eyebrow">Admin console</p>
+              <h2>RBAC privileges and platform controls</h2>
+              <p id="admin-summary">Admin-only controls are loading.</p>
+            </div>
+            <button class="secondary-button compact-button" type="button" id="refresh-admin-button">Refresh admin telemetry</button>
+          </div>
+          <div class="admin-grid">
+            <article class="panel admin-panel admin-panel-wide">
+              <div class="panel-heading">
+                <p class="eyebrow">Account control</p>
+                <h2>Add a new account</h2>
+              </div>
+              <form id="admin-account-form" class="admin-account-form">
+                <div class="admin-form-grid">
+                  <label>
+                    <span>Display name</span>
+                    <input type="text" name="display_name" placeholder="New teammate" required />
+                  </label>
+                  <label>
+                    <span>Email address</span>
+                    <input type="email" name="email" placeholder="teammate@example.com" required />
+                  </label>
+                  <label>
+                    <span>User ID</span>
+                    <input type="text" name="username" placeholder="teammate01" required />
+                  </label>
+                  <label>
+                    <span>Temporary password</span>
+                    <input type="text" name="password" placeholder="Minimum 6 characters" required />
+                  </label>
+                  <label>
+                    <span>Role</span>
+                    <select name="role">
+                      <option value="user" selected>User</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="admin-form-actions">
+                  <button type="submit">Add account</button>
+                  <p id="admin-account-message" class="admin-message">New accounts use email OTP at login.</p>
+                </div>
+              </form>
+            </article>
+
+            <article class="panel admin-panel">
+              <div class="panel-heading">
+                <p class="eyebrow">Privileges</p>
+                <h2>Role access</h2>
+              </div>
+              <div class="admin-list" id="rbac-list"></div>
+            </article>
+
+            <article class="panel admin-panel">
+              <div class="panel-heading">
+                <p class="eyebrow">Users</p>
+                <h2>Registered accounts</h2>
+              </div>
+              <div class="admin-list" id="user-directory"></div>
+            </article>
+
+            <article class="panel admin-panel">
+              <div class="panel-heading">
+                <p class="eyebrow">Audit</p>
+                <h2>Recent events</h2>
+              </div>
+              <div class="admin-list" id="audit-events"></div>
+            </article>
+
+            <article class="panel admin-panel">
+              <div class="panel-heading">
+                <p class="eyebrow">Tracing</p>
+                <h2>Recent request traces</h2>
+              </div>
+              <div class="admin-list" id="trace-events"></div>
+            </article>
+
+            <article class="panel admin-panel">
+              <div class="panel-heading">
+                <p class="eyebrow">Stack</p>
+                <h2>Observability services</h2>
+              </div>
+              <div class="admin-list" id="stack-status"></div>
+            </article>
+
+            <article class="panel admin-panel admin-panel-wide">
+              <div class="panel-heading">
+                <p class="eyebrow">Logs</p>
+                <h2>Application log display</h2>
+              </div>
+              <div class="log-console" id="log-lines"></div>
+            </article>
+          </div>
+        </section>
       </main>
     </div>
 
-    <script src="/app.js?v=16"></script>
+    <script src="/app.js?v=24"></script>
   </body>
 </html>

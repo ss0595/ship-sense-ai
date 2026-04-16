@@ -57,8 +57,8 @@ def enrich_result_with_openai(result: dict, logger: Logger) -> dict:
 def _agent_context(result: dict) -> dict:
     """Create a compact, non-secret prompt payload for the OpenAI call."""
     return {
-        "role": "ShipSense AI logistics delay-risk agent",
-        "instruction": "Use only these facts. Do not invent ports, APIs, incidents, or data.",
+        "role": "ShipSense AI multimodal delay-risk agent",
+        "instruction": "Use only these facts. Do not invent hubs, APIs, incidents, or data.",
         "shipment": result.get("shipment", {}),
         "score": result.get("score"),
         "level": result.get("level"),
@@ -74,7 +74,7 @@ def _agent_context(result: dict) -> dict:
             for factor in result.get("factors", [])[:4]
         ],
         "current_recommendations": result.get("recommendations", [])[:6],
-        "alternate_ports": [item.get("port") for item in result.get("alternatives", [])[:3]],
+        "alternate_hubs": [item.get("hub") or item.get("port") for item in result.get("alternatives", [])[:3]],
         "data_sources": result.get("data_sources", []),
         "required_json_shape": {
             "explanation": "45-65 words for the dashboard",
@@ -88,7 +88,7 @@ def _call_openai(api_key: str, model: str, context: dict) -> dict:
     payload = {
         "model": model,
         "instructions": (
-            "You are a professional logistics risk intelligence agent. "
+            "You are a professional multimodal logistics risk intelligence agent. "
             "Return valid JSON only. Keep the risk score and evidence consistent "
             "with the provided context. Never expose secrets."
         ),

@@ -11,9 +11,10 @@ from pathlib import Path
 
 
 def load_dotenv(path: Path) -> None:
-    """Load KEY=VALUE lines into the process environment if not already set."""
+    """Load KEY=VALUE lines into the environment, letting later file entries win."""
     if not path.exists():
         return
+    loaded: dict[str, str] = {}
     for raw_line in path.read_text(encoding="utf-8").splitlines():
         line = raw_line.strip()
         if not line or line.startswith("#") or "=" not in line:
@@ -21,7 +22,10 @@ def load_dotenv(path: Path) -> None:
         key, value = line.split("=", 1)
         key = key.strip()
         value = value.strip().strip('"').strip("'")
-        if key and key not in os.environ:
+        if key:
+            loaded[key] = value
+    for key, value in loaded.items():
+        if key not in os.environ:
             os.environ[key] = value
 
 
