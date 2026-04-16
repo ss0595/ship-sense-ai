@@ -29,6 +29,16 @@ The API returns a delay risk score, probability, explanation, contributing facto
 
 The origin field is treated as an **origin port**. Inland non-port cities such as Delhi are excluded from the dropdown. If an invalid origin is sent directly to the API, ShipSense AI lowers confidence and returns a validation warning.
 
+## Screenshots
+
+![ShipSense AI Login](assets/login%20page.png)
+
+![ShipSense AI Dashboard 1](assets/dashboard1.png)
+
+![ShipSense AI Dashboard 2](assets/dashboard2.png)
+
+![ShipSense AI Dashboard 3](assets/dashboard3.png)
+
 ## Mandatory demo login
 
 Default local demo users:
