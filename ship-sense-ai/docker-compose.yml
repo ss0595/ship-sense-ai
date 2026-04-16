@@ -1,0 +1,52 @@
+services:
+  shipsense-api:
+    build: .
+    container_name: shipsense-api
+    environment:
+      SHIPSENSE_SECRET: "replace-this-secret-before-production"
+      SHIPSENSE_ADMIN_PASSWORD: "admin123"
+      SHIPSENSE_ANALYST_PASSWORD: "analyst123"
+      OPENWEATHER_API_KEY: "${OPENWEATHER_API_KEY:-}"
+      NEWSAPI_API_KEY: "${NEWSAPI_API_KEY:-}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      OPENAI_MODEL: "${OPENAI_MODEL:-gpt-5-mini}"
+      SHIPSENSE_MFA_ENABLED: "${SHIPSENSE_MFA_ENABLED:-true}"
+      SHIPSENSE_MFA_DEMO_CODE: "${SHIPSENSE_MFA_DEMO_CODE:-true}"
+      SHIPSENSE_GOOGLE_DEMO: "${SHIPSENSE_GOOGLE_DEMO:-true}"
+      SHIPSENSE_WORKERS: "${SHIPSENSE_WORKERS:-2}"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    networks:
+      - shipsense-net
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    profiles: ["observability"]
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - shipsense-net
+    depends_on:
+      - shipsense-api
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    profiles: ["observability"]
+    environment:
+      GF_SECURITY_ADMIN_USER: "admin"
+      GF_SECURITY_ADMIN_PASSWORD: "admin"
+    ports:
+      - "3000:3000"
+    networks:
+      - shipsense-net
+    depends_on:
+      - prometheus
+
+networks:
+  shipsense-net:
+    name: shipsense-net

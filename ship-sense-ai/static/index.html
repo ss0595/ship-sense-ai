@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ShipSense AI - Predictive Delay Agent</title>
+    <link rel="stylesheet" href="/styles.css?v=16">
+  </head>
+  <body>
+    <section class="login-screen" id="login-screen">
+      <form class="login-card" id="login-form">
+        <div class="brand login-brand">
+          <span class="brand-mark">SS</span>
+          <div>
+            <strong>ShipSense AI</strong>
+            <span>Mandatory secure access</span>
+          </div>
+        </div>
+        <p class="eyebrow">Platform security</p>
+        <h1 id="auth-title">Sign in to the control tower</h1>
+        <label id="display-name-field" hidden>
+          Display name
+          <input id="signup-display-name" name="display_name" autocomplete="name" value="New Analyst">
+        </label>
+        <label>
+          User ID
+          <input id="login-username" name="username" autocomplete="username" placeholder="Enter your user ID">
+        </label>
+        <label>
+          Password
+          <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password">
+        </label>
+        <label id="otp-field" hidden>
+          OTP code
+          <input id="login-otp" name="otp" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter 6 digit OTP">
+        </label>
+        <div class="validation-warning" id="otp-demo-box" hidden></div>
+        <p class="login-note" id="login-note">Demo users are listed in the README. Dashboard API calls use secure access and refresh cookies after login.</p>
+        <div class="validation-warning" id="login-error" hidden></div>
+        <button type="submit" id="login-button">Login</button>
+        <button class="secondary-button" type="button" id="auth-mode-button">Create a new account</button>
+        <button class="secondary-button" type="button" id="google-login-button">Continue with Google demo</button>
+      </form>
+    </section>
+
+    <div class="app-shell" id="app-shell" hidden>
+      <aside class="sidebar" aria-label="Dashboard navigation">
+        <div class="brand">
+          <span class="brand-mark">SS</span>
+          <div>
+            <strong>ShipSense AI</strong>
+            <span>Delay risk agent</span>
+          </div>
+        </div>
+        <nav class="nav-list">
+          <a class="active" href="#risk">Risk desk</a>
+          <a href="#research">R&D</a>
+          <a href="#signals">Signals</a>
+          <a href="#actions">Mitigation</a>
+          <a href="#watchlist">Watchlist</a>
+          <a href="#platform">Platform</a>
+        </nav>
+        <div class="event-note">
+          <span>DeepFrog Hackstorm'26</span>
+          <strong>Track 2</strong>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Predictive Delay and Risk Intelligence Agent</p>
+            <h1>Shipment risk control tower</h1>
+          </div>
+          <div class="topbar-meta">
+            <span id="api-status">Connecting</span>
+            <strong id="user-badge">Demo feed</strong>
+            <span class="live-badge" id="live-badge">Demo agent</span>
+            <button class="logout-button" id="logout-button" type="button">Logout</button>
+          </div>
+        </header>
+
+        <section class="risk-layout" id="risk">
+          <form class="panel query-panel" id="risk-form">
+            <div class="panel-heading">
+              <p class="eyebrow">Ask the agent</p>
+              <h2>Identify delay risks</h2>
+            </div>
+
+            <label for="query">Natural language input</label>
+            <textarea id="query" name="query" rows="4" placeholder="Describe the shipment or fill the fields below"></textarea>
+
+            <div class="field-grid">
+              <label>
+                Destination port
+                <select id="destination_port" name="destination_port"></select>
+              </label>
+              <label>
+                Arrival in days
+                <input id="arrival_days" name="arrival_days" type="number" min="0" max="45" placeholder="Enter ETA in days">
+              </label>
+              <label>
+                Origin port
+                <select id="origin" name="origin"></select>
+              </label>
+              <label>
+                Carrier
+                <select id="carrier" name="carrier">
+                  <option value="" selected disabled>Select carrier</option>
+                  <option>GulfLink</option>
+                  <option>BlueWave</option>
+                  <option>OceanPeak</option>
+                  <option>HarborOne</option>
+                  <option>InlandPlus</option>
+                </select>
+              </label>
+              <label>
+                Cargo type
+                <select id="cargo_type" name="cargo_type">
+                  <option value="" selected disabled>Select cargo type</option>
+                  <option>Electronics</option>
+                  <option>Pharma</option>
+                  <option>Cold Chain</option>
+                  <option>Apparel</option>
+                  <option>Automotive</option>
+                  <option>Machinery</option>
+                </select>
+              </label>
+              <label>
+                Priority
+                <select id="priority" name="priority">
+                  <option value="" selected disabled>Select priority</option>
+                  <option>High</option>
+                  <option>Medium</option>
+                  <option>Low</option>
+                </select>
+              </label>
+            </div>
+
+            <button type="submit" id="analyze-button">Analyze shipment</button>
+            <button class="secondary-button" type="button" id="queue-button">Queue async analysis</button>
+            <div class="validation-warning" id="job-status" hidden></div>
+          </form>
+
+          <section class="panel score-panel" aria-live="polite">
+            <div class="panel-heading">
+              <p class="eyebrow">Current assessment</p>
+              <h2 id="risk-title">Awaiting analysis</h2>
+            </div>
+            <div class="score-wrap">
+              <div class="risk-gauge" id="risk-gauge">
+                <span id="risk-score">--</span>
+                <small>risk score</small>
+              </div>
+              <div class="score-copy">
+                <p id="risk-explanation">Run the agent to calculate delay probability and mitigation actions.</p>
+                <dl>
+                  <div>
+                    <dt>Delay probability</dt>
+                    <dd id="risk-probability">--</dd>
+                  </div>
+                  <div>
+                    <dt>Confidence</dt>
+                    <dd id="risk-confidence">--</dd>
+                  </div>
+                  <div>
+                    <dt>Route</dt>
+                    <dd id="risk-route">--</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+            <div class="source-row" id="source-row"></div>
+            <div class="validation-warning" id="validation-warning" hidden></div>
+          </section>
+        </section>
+
+        <section class="signal-band" id="signals">
+          <img
+            src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1100&q=80"
+            alt="Container port with stacked freight containers"
+          >
+          <div>
+            <p class="eyebrow">AI-assisted signal fusion</p>
+            <h2 id="signal-title">Historical shipments + operations signals + OpenAI explanation</h2>
+            <p id="signal-summary">The agent turns the score, factors, and mitigation evidence into a clear decision brief.</p>
+          </div>
+        </section>
+
+        <section class="research-grid" id="research">
+          <article>
+            <p class="eyebrow">DeepFrog fit</p>
+            <h2>Agentic logistics intelligence</h2>
+            <p>Built for mission-critical shipment operations where teams need early warnings, clear evidence, and proactive action.</p>
+          </article>
+          <article>
+            <p class="eyebrow">R&D principle</p>
+            <h2>Explainable before complex</h2>
+            <p>Every score is broken into history, congestion, route, timing, and signal factors before OpenAI writes the final explanation.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Production path</p>
+            <h2>Ready for real feeds</h2>
+            <p>The demo CSV and JSON feeds can be replaced with TMS data, port signals, carrier schedules, and controlled enterprise APIs.</p>
+          </article>
+        </section>
+
+        <section class="insight-grid" id="actions">
+          <section class="panel">
+            <div class="panel-heading">
+              <p class="eyebrow">Drivers</p>
+              <h2>Risk factors</h2>
+            </div>
+            <div class="factor-list" id="factor-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <p class="eyebrow">Action plan</p>
+              <h2>Mitigation recommendations</h2>
+            </div>
+            <ol class="recommendation-list" id="recommendation-list"></ol>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <p class="eyebrow">Fallbacks</p>
+              <h2>Reroute options</h2>
+            </div>
+            <div class="alternate-list" id="alternate-list"></div>
+          </section>
+        </section>
+
+        <section class="panel table-panel" id="watchlist">
+          <div class="panel-heading table-heading">
+            <div>
+              <p class="eyebrow">Operational memory</p>
+              <h2>Recent historical shipments</h2>
+            </div>
+            <span id="signal-updated">Feed not loaded</span>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Shipment</th>
+                  <th>Route</th>
+                  <th>Cargo</th>
+                  <th>Carrier</th>
+                  <th>Status</th>
+                  <th>Delay</th>
+                </tr>
+              </thead>
+              <tbody id="shipment-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="platform-grid" id="platform">
+          <article>
+            <p class="eyebrow">Green</p>
+            <h2>Mandatory base</h2>
+            <p id="green-status">Login, signup, protected data, Docker, REST API, and logging are complete.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Yellow</p>
+            <h2>Security and observability</h2>
+            <p id="yellow-status">MFA OTP, access/refresh cookies, RBAC, audit trail, and metrics are active.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Blue</p>
+            <h2>Scale architecture</h2>
+            <p id="blue-status">Google SSO demo, async jobs, two workers, idempotency, and Minikube manifests are ready.</p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js?v=16"></script>
+  </body>
+</html>

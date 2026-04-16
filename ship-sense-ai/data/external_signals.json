@@ -1,0 +1,274 @@
+{
+  "last_updated": "2026-04-11T09:15:00+04:00",
+  "ports": {
+    "Jebel Ali": {
+      "country": "UAE",
+      "region": "Gulf",
+      "weather": {
+        "condition": "Coastal winds with dust haze near the UAE approach",
+        "severity": 64,
+        "wind_kph": 38,
+        "rain_mm": 2
+      },
+      "port": {
+        "congestion_index": 72,
+        "berth_wait_hours": 18,
+        "customs_backlog": "Medium"
+      },
+      "news": [
+        {
+          "headline": "High yard utilization reported on Gulf feeder links",
+          "severity": 58,
+          "source": "Port ops demo feed"
+        },
+        {
+          "headline": "Regional carrier schedules are compressing after a weather window",
+          "severity": 52,
+          "source": "News demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai-Jebel Ali",
+          "risk": 66,
+          "message": "Feeder departure buffers are tight on the Mumbai-Jebel Ali corridor"
+        },
+        {
+          "route": "Nhava Sheva-Jebel Ali",
+          "risk": 72,
+          "message": "Recent sailings on Nhava Sheva-Jebel Ali saw berth wait spillover"
+        }
+      ],
+      "alternate_ports": ["Khalifa Port", "Sohar Port"],
+      "mitigations": [
+        "Ask the carrier to hold an alternate discharge option for 24 hours.",
+        "Share a proactive ETA watch with the consignee and customs broker."
+      ]
+    },
+    "Singapore": {
+      "country": "Singapore",
+      "region": "Southeast Asia",
+      "weather": {
+        "condition": "Scattered showers, normal marine visibility",
+        "severity": 30,
+        "wind_kph": 22,
+        "rain_mm": 6
+      },
+      "port": {
+        "congestion_index": 45,
+        "berth_wait_hours": 8,
+        "customs_backlog": "Low"
+      },
+      "news": [
+        {
+          "headline": "Transshipment windows remain stable with minor rain interruptions",
+          "severity": 24,
+          "source": "Port ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai-Singapore",
+          "risk": 32,
+          "message": "Normal corridor conditions with small weather buffer"
+        }
+      ],
+      "alternate_ports": ["Port Klang", "Tanjung Pelepas"],
+      "mitigations": [
+        "Keep transshipment documents ready to preserve the current slot."
+      ]
+    },
+    "Rotterdam": {
+      "country": "Netherlands",
+      "region": "Europe",
+      "weather": {
+        "condition": "North Sea wind advisory and wet terminal conditions",
+        "severity": 59,
+        "wind_kph": 44,
+        "rain_mm": 12
+      },
+      "port": {
+        "congestion_index": 67,
+        "berth_wait_hours": 14,
+        "customs_backlog": "Medium"
+      },
+      "news": [
+        {
+          "headline": "Labor meeting may slow some container yard moves this week",
+          "severity": 54,
+          "source": "News demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Shanghai-Rotterdam",
+          "risk": 60,
+          "message": "Long-haul Asia-Europe schedules have reduced recovery buffer"
+        }
+      ],
+      "alternate_ports": ["Antwerp-Bruges", "Hamburg"],
+      "mitigations": [
+        "Confirm onward rail slot and prepare customer buffer messaging."
+      ]
+    },
+    "Nhava Sheva": {
+      "country": "India",
+      "region": "West India",
+      "weather": {
+        "condition": "Clear conditions with localized heat stress",
+        "severity": 34,
+        "wind_kph": 18,
+        "rain_mm": 0
+      },
+      "port": {
+        "congestion_index": 62,
+        "berth_wait_hours": 10,
+        "customs_backlog": "Medium"
+      },
+      "news": [
+        {
+          "headline": "Gate flow is steady; documentation queues remain moderate",
+          "severity": 35,
+          "source": "Port ops demo feed"
+        }
+      ],
+      "route_alerts": [],
+      "alternate_ports": ["Mundra", "Pipavav"],
+      "mitigations": [
+        "Pre-verify customs paperwork before the truck reaches the gate."
+      ]
+    },
+    "Shanghai": {
+      "country": "China",
+      "region": "East Asia",
+      "weather": {
+        "condition": "Dense fog pockets reported around early morning sailings",
+        "severity": 57,
+        "wind_kph": 20,
+        "rain_mm": 4
+      },
+      "port": {
+        "congestion_index": 64,
+        "berth_wait_hours": 13,
+        "customs_backlog": "Medium"
+      },
+      "news": [
+        {
+          "headline": "Feeder recovery is improving but blank sailing risk remains visible",
+          "severity": 50,
+          "source": "News demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Shanghai-Rotterdam",
+          "risk": 60,
+          "message": "Asia-Europe corridor still has thin schedule recovery margin"
+        }
+      ],
+      "alternate_ports": ["Ningbo-Zhoushan", "Qingdao"],
+      "mitigations": [
+        "Hold booking flexibility for the next sailing if fog worsens."
+      ]
+    },
+    "Colombo": {
+      "country": "Sri Lanka",
+      "region": "South Asia",
+      "weather": {
+        "condition": "Passing showers, normal port visibility",
+        "severity": 42,
+        "wind_kph": 24,
+        "rain_mm": 8
+      },
+      "port": {
+        "congestion_index": 55,
+        "berth_wait_hours": 9,
+        "customs_backlog": "Low"
+      },
+      "news": [
+        {
+          "headline": "Transshipment stack density is moderate after weekend arrivals",
+          "severity": 37,
+          "source": "Port ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai-Colombo",
+          "risk": 38,
+          "message": "Route is operating within normal buffer"
+        }
+      ],
+      "alternate_ports": ["Tuticorin", "Singapore"],
+      "mitigations": [
+        "Keep feeder confirmation active until discharge is complete."
+      ]
+    },
+    "Salalah": {
+      "country": "Oman",
+      "region": "Gulf",
+      "weather": {
+        "condition": "Moderate coastal wind and haze",
+        "severity": 48,
+        "wind_kph": 34,
+        "rain_mm": 1
+      },
+      "port": {
+        "congestion_index": 60,
+        "berth_wait_hours": 12,
+        "customs_backlog": "Medium"
+      },
+      "news": [
+        {
+          "headline": "Regional transshipment volume remains above normal",
+          "severity": 46,
+          "source": "Port ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Chennai-Salalah",
+          "risk": 52,
+          "message": "Sailing has limited recovery time after prior port call"
+        }
+      ],
+      "alternate_ports": ["Sohar Port", "Jebel Ali"],
+      "mitigations": [
+        "Confirm connecting feeder cutoff before vessel arrival."
+      ]
+    },
+    "Khalifa Port": {
+      "country": "UAE",
+      "region": "Gulf",
+      "weather": {
+        "condition": "Clear approach with light crosswinds",
+        "severity": 36,
+        "wind_kph": 21,
+        "rain_mm": 0
+      },
+      "port": {
+        "congestion_index": 42,
+        "berth_wait_hours": 7,
+        "customs_backlog": "Low"
+      },
+      "news": [
+        {
+          "headline": "Terminal capacity is available for selected alternate discharge cases",
+          "severity": 26,
+          "source": "Port ops demo feed"
+        }
+      ],
+      "route_alerts": [
+        {
+          "route": "Mumbai-Khalifa Port",
+          "risk": 30,
+          "message": "Alternate UAE corridor has available buffer"
+        }
+      ],
+      "alternate_ports": ["Jebel Ali", "Sohar Port"],
+      "mitigations": [
+        "Use as first alternate if Jebel Ali berth delay exceeds 18 hours."
+      ]
+    }
+  }
+}
