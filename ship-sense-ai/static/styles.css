@@ -621,6 +621,25 @@ dd {
   font-weight: 800;
 }
 
+.decision-strip {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+}
+
+.decision-strip strong,
+.decision-strip p {
+  display: block;
+}
+
+.decision-strip p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .validation-warning {
   margin-top: 14px;
   padding: 12px;

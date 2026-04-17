@@ -92,6 +92,19 @@ function capitalize(text) {
   return value ? value.charAt(0).toUpperCase() + value.slice(1) : value;
 }
 
+function formatHours(totalHours) {
+  const value = Number(totalHours || 0);
+  if (!Number.isFinite(value) || value <= 0) {
+    return "--";
+  }
+  const days = Math.floor(value / 24);
+  const hours = Math.round(value % 24);
+  if (days <= 0) {
+    return `${hours}h`;
+  }
+  return `${days}d ${hours}h`;
+}
+
 function setSelectOptions(select, placeholder, options, labelFrom = (item) => item, valueFrom = (item) => item) {
   select.innerHTML = "";
   const defaultOption = document.createElement("option");
@@ -278,8 +291,13 @@ function renderAlternates(alternatives) {
   alternatives.forEach((alternate) => {
     const row = document.createElement("div");
     row.className = "alternate-row";
+    const distanceSummary =
+      alternate.route_distance_km && alternate.detour_km !== undefined
+        ? `<p>Estimated reroute distance ${alternate.route_distance_km} km · detour +${alternate.detour_km} km · transit ${formatHours(alternate.estimated_transit_hours)}</p>`
+        : "";
     row.innerHTML = `
       <strong>${alternate.hub || alternate.port}</strong>
+      ${distanceSummary}
       <p>${alternate.reason}</p>
       <p>${alternate.tradeoff}</p>
     `;
@@ -485,6 +503,11 @@ function renderResult(result) {
   document.querySelector("#risk-probability").textContent = `${Math.round(result.probability * 100)}%`;
   document.querySelector("#risk-confidence").textContent = `${result.confidence}%`;
   document.querySelector("#risk-route").textContent = `${prettyMode(result.shipment.transport_mode)} - ${result.shipment.route}`;
+  document.querySelector("#risk-distance").textContent =
+    result.route_plan?.primary_distance_km ? `${result.route_plan.primary_distance_km} km` : "--";
+  document.querySelector("#risk-transit").textContent = formatHours(result.route_plan?.estimated_transit_hours);
+  document.querySelector("#decision-summary").textContent =
+    result.best_option?.summary || "Continue with the primary route and monitor live signals.";
 
   renderSources(result.data_sources);
   renderFactors(result.factors);

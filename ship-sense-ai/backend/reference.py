@@ -23,6 +23,81 @@ MODE_CARRIERS = {
     "waterways": ["BlueWave", "GulfLink", "HarborOne", "OceanPeak"],
 }
 
+VEHICLE_TRANSIT_PROFILES = {
+    "Cargo Aircraft": {"speed_kph": 760, "handling_hours": 5},
+    "Charter Flight": {"speed_kph": 690, "handling_hours": 4},
+    "Truck": {"speed_kph": 58, "handling_hours": 6},
+    "Van": {"speed_kph": 62, "handling_hours": 4},
+    "Bus": {"speed_kph": 52, "handling_hours": 4},
+    "Freight Train": {"speed_kph": 72, "handling_hours": 8},
+    "Express Rail": {"speed_kph": 95, "handling_hours": 6},
+    "Cargo Vessel": {"speed_kph": 31, "handling_hours": 18},
+    "Cruise": {"speed_kph": 35, "handling_hours": 20},
+}
+
+ROUTING_PROFILES = {
+    "airways": {
+        "network_multiplier": 1.08,
+        "max_detour_ratio": 1.55,
+        "max_terminal_leg_ratio": 0.72,
+        "max_candidate_gap_km": 6800,
+        "same_region_bonus": 14,
+        "same_country_bonus": 4,
+        "seed_bonus": 12,
+        "pressure_weight": 1.7,
+        "history_weight": 2.3,
+        "distance_penalty": 0.010,
+        "detour_penalty": 24,
+        "cross_border": True,
+        "handoff_label": "air transfer",
+    },
+    "roadways": {
+        "network_multiplier": 1.28,
+        "max_detour_ratio": 1.32,
+        "max_terminal_leg_ratio": 0.58,
+        "max_candidate_gap_km": 1400,
+        "same_region_bonus": 18,
+        "same_country_bonus": 10,
+        "seed_bonus": 10,
+        "pressure_weight": 1.5,
+        "history_weight": 2.6,
+        "distance_penalty": 0.022,
+        "detour_penalty": 36,
+        "cross_border": False,
+        "handoff_label": "road diversion",
+    },
+    "railways": {
+        "network_multiplier": 1.19,
+        "max_detour_ratio": 1.38,
+        "max_terminal_leg_ratio": 0.66,
+        "max_candidate_gap_km": 1800,
+        "same_region_bonus": 18,
+        "same_country_bonus": 10,
+        "seed_bonus": 10,
+        "pressure_weight": 1.55,
+        "history_weight": 2.7,
+        "distance_penalty": 0.018,
+        "detour_penalty": 32,
+        "cross_border": False,
+        "handoff_label": "rail terminal transfer",
+    },
+    "waterways": {
+        "network_multiplier": 1.22,
+        "max_detour_ratio": 1.62,
+        "max_terminal_leg_ratio": 0.82,
+        "max_candidate_gap_km": 8200,
+        "same_region_bonus": 14,
+        "same_country_bonus": 5,
+        "seed_bonus": 12,
+        "pressure_weight": 1.65,
+        "history_weight": 2.1,
+        "distance_penalty": 0.009,
+        "detour_penalty": 22,
+        "cross_border": True,
+        "handoff_label": "port diversion",
+    },
+}
+
 HUB_CATALOG = {
     "Ahmedabad Rail Terminal": {
         "mode": "railways",
@@ -705,6 +780,21 @@ def vehicle_types_for_mode(mode: str | None) -> list[str]:
 
 def carriers_for_mode(mode: str | None) -> list[str]:
     return MODE_CARRIERS.get(normalize_mode(mode), [])
+
+
+def routing_profile_for_mode(mode: str | None) -> dict:
+    return ROUTING_PROFILES.get(normalize_mode(mode), ROUTING_PROFILES["waterways"])
+
+
+def transit_profile_for_vehicle(vehicle_type: str | None, mode: str | None = None) -> dict:
+    vehicle = str(vehicle_type or "").strip()
+    if vehicle in VEHICLE_TRANSIT_PROFILES:
+        return VEHICLE_TRANSIT_PROFILES[vehicle]
+    normalized_mode = normalize_mode(mode)
+    defaults = MODE_VEHICLE_TYPES.get(normalized_mode, [])
+    if defaults and defaults[0] in VEHICLE_TRANSIT_PROFILES:
+        return VEHICLE_TRANSIT_PROFILES[defaults[0]]
+    return {"speed_kph": 45, "handling_hours": 8}
 
 
 def canonical_hub_name(name: str, mode: str | None = None) -> str | None:

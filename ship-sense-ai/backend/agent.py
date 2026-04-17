@@ -18,6 +18,8 @@ from backend.reference import (
     hubs_for_mode,
     is_valid_origin_hub,
     normalize_mode,
+    routing_profile_for_mode,
+    transit_profile_for_vehicle,
     vehicle_types_for_mode,
 )
 
@@ -242,6 +244,29 @@ def _distance_km(left: str, right: str) -> float:
     return 6371.0 * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
 
+def _route_distance_km(left: str, right: str, mode: str) -> float:
+    """Convert straight-line distance into a route estimate by transport mode."""
+    if _same(left, right):
+        return 0.0
+    return _distance_km(left, right) * float(routing_profile_for_mode(mode).get("network_multiplier", 1.0))
+
+
+def _estimated_transit_hours(
+    route_distance_km: float,
+    mode: str,
+    vehicle_type: str,
+    pressure_score: float,
+    weather_severity: float,
+    route_risk: float,
+    delay_rate: float,
+) -> float:
+    """Estimate route time from distance, vehicle speed, and current disruption pressure."""
+    profile = transit_profile_for_vehicle(vehicle_type, mode)
+    base_hours = route_distance_km / max(float(profile.get("speed_kph", 45)), 1.0) + float(profile.get("handling_hours", 8))
+    pressure_buffer = 1 + pressure_score / 260 + weather_severity / 420 + route_risk / 520 + delay_rate * 0.35
+    return round(base_hours * pressure_buffer, 1)
+
+
 def _hub_pressure_score(hub: str, signals: dict, mode: str) -> float:
     """Build one comparable pressure score from ops, weather, news, and corridor risk."""
     signal = _hub_signal(hub, signals, mode)
@@ -257,65 +282,222 @@ def _hub_pressure_score(hub: str, signals: dict, mode: str) -> float:
     )
 
 
-def _alternate_candidates(destination_hub: str, signals: dict, mode: str) -> list[str]:
-    """Choose alternate hubs that are mode-compatible and operationally distinct."""
+def _hub_history_score(hub: str, shipments: list[dict], mode: str) -> int:
+    """Prefer hubs that already appear in our historical movement data for the same mode."""
+    scoped = _mode_records(shipments, mode)
+    return sum(
+        1
+        for row in scoped
+        if _same(row.get("origin", ""), hub) or _same(row.get("destination_hub", ""), hub)
+    )
+
+
+def _alternate_candidates(origin_hub: str, destination_hub: str, signals: dict, shipments: list[dict], mode: str) -> list[dict]:
+    """Choose alternate hubs using route distance, detour size, and hub pressure."""
+    canonical_origin = canonical_hub_name(origin_hub, mode) or origin_hub
     canonical_destination = canonical_hub_name(destination_hub, mode) or destination_hub
     destination_meta = HUB_CATALOG.get(canonical_destination, {})
+    profile = routing_profile_for_mode(mode)
     seed_alternates = [
         canonical_hub_name(hub, mode) or str(hub)
         for hub in _hub_signal(canonical_destination, signals, mode).get("alternate_hubs", [])
         if (canonical_hub_name(hub, mode) or str(hub)) != canonical_destination
     ]
     all_candidates = list(dict.fromkeys(seed_alternates + hubs_for_mode(mode)))
-    scored: list[tuple[float, str]] = []
+    scored: list[tuple[float, dict]] = []
     destination_pressure = _hub_pressure_score(canonical_destination, signals, mode)
+    primary_distance = max(_route_distance_km(canonical_origin, canonical_destination, mode), 1.0)
 
     for candidate in all_candidates:
-        if candidate == canonical_destination or candidate not in HUB_CATALOG:
+        if candidate in {canonical_origin, canonical_destination} or candidate not in HUB_CATALOG:
             continue
         candidate_meta = HUB_CATALOG[candidate]
+        if not profile["cross_border"] and candidate_meta.get("country") != destination_meta.get("country"):
+            continue
         same_region = candidate_meta.get("region") == destination_meta.get("region")
         same_country = candidate_meta.get("country") == destination_meta.get("country")
         pressure_gap = destination_pressure - _hub_pressure_score(candidate, signals, mode)
-        distance = _distance_km(canonical_destination, candidate)
-        score = pressure_gap - distance * 0.01 + (18 if same_region else 0) + (8 if same_country else 0)
-        scored.append((score, candidate))
+        if pressure_gap <= 0:
+            continue
+        final_leg_distance = _route_distance_km(candidate, canonical_destination, mode)
+        if final_leg_distance > primary_distance * float(profile["max_terminal_leg_ratio"]):
+            continue
+        direct_gap = _distance_km(candidate, canonical_destination)
+        if direct_gap > float(profile["max_candidate_gap_km"]):
+            continue
+        total_distance = _route_distance_km(canonical_origin, candidate, mode) + final_leg_distance
+        detour_ratio = total_distance / primary_distance
+        if detour_ratio > float(profile["max_detour_ratio"]):
+            continue
+        history_score = min(_hub_history_score(candidate, shipments, mode), 10)
+        seed_bonus = float(profile["seed_bonus"]) if candidate in seed_alternates else 0.0
+        score = (
+            pressure_gap * float(profile["pressure_weight"])
+            + history_score * float(profile["history_weight"])
+            + seed_bonus
+            + (float(profile["same_region_bonus"]) if same_region else 0.0)
+            + (float(profile["same_country_bonus"]) if same_country else 0.0)
+            - direct_gap * float(profile["distance_penalty"])
+            - detour_ratio * float(profile["detour_penalty"])
+        )
+        scored.append(
+            (
+                score,
+                {
+                    "hub": candidate,
+                    "primary_distance_km": round(primary_distance),
+                    "route_distance_km": round(total_distance),
+                    "detour_km": round(max(total_distance - primary_distance, 0)),
+                    "detour_ratio": round(detour_ratio, 2),
+                    "same_region": same_region,
+                },
+            )
+        )
+
+    if not scored and seed_alternates:
+        for candidate in seed_alternates:
+            if candidate in {canonical_origin, canonical_destination} or candidate not in HUB_CATALOG:
+                continue
+            candidate_meta = HUB_CATALOG[candidate]
+            if not profile["cross_border"] and candidate_meta.get("country") != destination_meta.get("country"):
+                continue
+            pressure_gap = destination_pressure - _hub_pressure_score(candidate, signals, mode)
+            if pressure_gap <= 0:
+                continue
+            total_distance = _route_distance_km(canonical_origin, candidate, mode) + _route_distance_km(candidate, canonical_destination, mode)
+            detour_ratio = total_distance / primary_distance
+            if detour_ratio > float(profile["max_detour_ratio"]) * 1.15:
+                continue
+            scored.append(
+                (
+                    pressure_gap,
+                    {
+                        "hub": candidate,
+                        "primary_distance_km": round(primary_distance),
+                        "route_distance_km": round(total_distance),
+                        "detour_km": round(max(total_distance - primary_distance, 0)),
+                        "detour_ratio": round(detour_ratio, 2),
+                        "same_region": candidate_meta.get("region") == destination_meta.get("region"),
+                    },
+                )
+            )
 
     ranked = [candidate for _, candidate in sorted(scored, key=lambda item: item[0], reverse=True)]
     return ranked[:3]
 
 
-def _alternate_plan(destination_hub: str, signals: dict, movement: dict, route_alert: dict) -> list[dict]:
+def _alternate_plan(origin_hub: str, destination_hub: str, signals: dict, shipments: list[dict], movement: dict, route_alert: dict) -> list[dict]:
     """Explain reroute options with destination-aware reasons and tradeoffs."""
     mode = movement["transport_mode"]
+    profile = routing_profile_for_mode(mode)
     canonical_destination = canonical_hub_name(destination_hub, mode) or destination_hub
     destination_meta = HUB_CATALOG.get(canonical_destination, {})
     destination_pressure = _hub_pressure_score(canonical_destination, signals, mode)
     plans = []
+    mode_rows = _mode_records(shipments, mode)
+    mode_delay_rate = _delay_rate(mode_rows)
 
-    for hub in _alternate_candidates(canonical_destination, signals, mode):
+    for candidate in _alternate_candidates(origin_hub, canonical_destination, signals, shipments, mode):
+        hub = candidate["hub"]
         candidate_meta = HUB_CATALOG.get(hub, {})
         candidate_signal = _hub_signal(hub, signals, mode)
         candidate_pressure = _hub_pressure_score(hub, signals, mode)
         capacity = candidate_signal.get("operations", {}).get("capacity_index", 0)
         wait_hours = candidate_signal.get("operations", {}).get("wait_hours", 0)
-        distance = round(_distance_km(canonical_destination, hub))
-        same_region = candidate_meta.get("region") == destination_meta.get("region")
         pressure_delta = round(max(destination_pressure - candidate_pressure, 1))
         route_issue = str(route_alert.get("message", "")).strip()
+        route_distance = float(candidate["route_distance_km"])
+        candidate_route_alert = _route_alert_for(f"{movement['origin']}-{hub}", candidate_signal)
+        estimated_risk_score = int(
+            round(
+                clamp(
+                    movement["_primary_score"] - pressure_delta * 0.72 + max(candidate["detour_ratio"] - 1, 0) * 18,
+                    5,
+                    96,
+                )
+            )
+        )
+        estimated_transit_hours = _estimated_transit_hours(
+            route_distance,
+            mode,
+            movement["vehicle_type"],
+            candidate_pressure,
+            float(candidate_signal.get("weather", {}).get("severity", 0)),
+            float(candidate_route_alert.get("risk", 0)),
+            mode_delay_rate,
+        )
         reason = (
-            f"{hub} is a lower-pressure {mode[:-1]} option with about {pressure_delta} points less operational stress "
-            f"and an expected handling wait of {wait_hours}h."
+            f"{hub} is a lower-pressure {mode[:-1]} option with about {pressure_delta} points less operational stress, "
+            f"an expected handling wait of {wait_hours}h, and a reroute distance of about {candidate['route_distance_km']} km."
         )
         if route_issue and float(route_alert.get("risk", 0)) >= 45:
             reason += f" It also keeps you clear of the current corridor issue: {route_issue}"
         tradeoff = (
-            f"{'Same-region' if same_region else 'Cross-region'} handoff adds roughly {distance} km of recovery planning, "
+            f"{'Same-region' if candidate['same_region'] else 'Cross-region'} {profile['handoff_label']} adds "
+            f"{candidate['detour_km']} km over the primary corridor ({int((candidate['detour_ratio'] - 1) * 100)}% longer), "
             f"but current capacity is {capacity}/100 so the ETA buffer is stronger."
         )
-        plans.append({"hub": hub, "port": hub, "reason": reason, "tradeoff": tradeoff})
+        plans.append(
+            {
+                "hub": hub,
+                "port": hub,
+                "reason": reason,
+                "tradeoff": tradeoff,
+                "route_distance_km": candidate["route_distance_km"],
+                "detour_km": candidate["detour_km"],
+                "detour_ratio": candidate["detour_ratio"],
+                "estimated_transit_hours": estimated_transit_hours,
+                "estimated_risk_score": estimated_risk_score,
+            }
+        )
 
     return plans
+
+
+def _best_route_option(movement: dict, score: int, primary_distance_km: float, primary_transit_hours: float, alternatives: list[dict]) -> dict:
+    """Choose the fastest option that materially lowers risk; otherwise prefer the safest practical route."""
+    options = [
+        {
+            "type": "primary",
+            "label": movement["route"],
+            "hub": movement["destination_hub"],
+            "distance_km": round(primary_distance_km),
+            "estimated_transit_hours": primary_transit_hours,
+            "estimated_risk_score": score,
+        }
+    ]
+    for alternate in alternatives:
+        options.append(
+            {
+                "type": "reroute",
+                "label": alternate["hub"],
+                "hub": alternate["hub"],
+                "distance_km": alternate.get("route_distance_km", 0),
+                "estimated_transit_hours": alternate.get("estimated_transit_hours", primary_transit_hours),
+                "estimated_risk_score": alternate.get("estimated_risk_score", score),
+            }
+        )
+
+    safer_options = [option for option in options if option["estimated_risk_score"] <= score - 5]
+    if safer_options:
+        best = min(safer_options, key=lambda option: (option["estimated_transit_hours"], option["estimated_risk_score"]))
+    else:
+        best = min(options, key=lambda option: (option["estimated_risk_score"], option["estimated_transit_hours"]))
+
+    if best["type"] == "primary":
+        summary = (
+            f"Stay on the primary route. It is still the fastest practical option at about {round(primary_transit_hours, 1)}h, "
+            "and no alternate currently reduces risk enough to justify the detour."
+        )
+    else:
+        summary = (
+            f"Fastest lower-risk option: reroute via {best['hub']}. Estimated transit is about "
+            f"{round(best['estimated_transit_hours'], 1)}h across {best['distance_km']} km, "
+            f"with projected risk easing to {risk_level(best['estimated_risk_score']).lower()}."
+        )
+
+    best["summary"] = summary
+    return best
 
 
 def _priority_impact(priority: str, cargo_type: str, arrival_days: int) -> float:
@@ -559,7 +741,20 @@ def predict_risk(payload: dict, shipments: list[dict], signals: dict) -> dict:
         f"{top_factors[0]['name'].lower()}, {top_factors[1]['name'].lower()}, and "
         f"{top_factors[2]['name'].lower()} are all adding measurable delay pressure."
     )
-    alternatives = _alternate_plan(movement["destination_hub"], signals, movement, route_alert)
+    primary_route_distance_km = _route_distance_km(movement["origin"], movement["destination_hub"], mode)
+    movement["_primary_score"] = score
+    primary_transit_hours = _estimated_transit_hours(
+        primary_route_distance_km,
+        mode,
+        movement["vehicle_type"],
+        _hub_pressure_score(movement["destination_hub"], signals, mode),
+        float(weather.get("severity", 0)),
+        float(route_alert.get("risk", 0)),
+        route_delay_rate,
+    )
+    alternatives = _alternate_plan(movement["origin"], movement["destination_hub"], signals, shipments, movement, route_alert)
+    best_option = _best_route_option(movement, score, primary_route_distance_km, primary_transit_hours, alternatives)
+    movement.pop("_primary_score", None)
 
     return {
         "shipment": movement,
@@ -576,6 +771,11 @@ def predict_risk(payload: dict, shipments: list[dict], signals: dict) -> dict:
         "recommendations": _recommendations(score, top_factors, hub_signal, movement, alternatives),
         "timeline": _timeline(score, movement),
         "alternatives": alternatives,
+        "route_plan": {
+            "primary_distance_km": round(primary_route_distance_km),
+            "estimated_transit_hours": primary_transit_hours,
+        },
+        "best_option": best_option,
         "signals": {
             "last_updated": signals.get("last_updated", "Demo feed"),
             "weather": weather,
@@ -584,6 +784,7 @@ def predict_risk(payload: dict, shipments: list[dict], signals: dict) -> dict:
             "route_alert": route_alert,
             "historical_matches": matched_records,
             "hub_delay_rate": round(hub_delay_rate, 2),
+            "primary_route_distance_km": round(primary_route_distance_km),
         },
         "data_sources": [
             "Historical transport CSV",

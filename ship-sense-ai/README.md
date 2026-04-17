@@ -25,19 +25,27 @@ It combines:
 - Hub operations, weather, news, and route alert signals from `data/external_signals.json`
 - OpenAI API, when configured, to write the final explanation and mitigation plan from the calculated evidence
 
-The API returns a delay risk score, probability, explanation, contributing factors, reroute options, and mitigation steps.
+The API returns a delay risk score, probability, explanation, contributing factors, route distance, estimated transit time, reroute options, and a fastest lower-risk recommendation.
 
 The origin field is treated as an **origin hub** for the selected mode. If an invalid origin is sent directly to the API, ShipSense AI lowers confidence and returns a validation warning.
 
 ## Screenshots
 
-![ShipSense AI Login](assets/login%20page.png)
+![ShipSense AI Login](assets/login%20page1.png)
 
-![ShipSense AI Dashboard 1](assets/dashboard1.png)
+![ShipSense AI User Dashboard 1](assets/user-dashboard1.png)
 
-![ShipSense AI Dashboard 2](assets/dashboard2.png)
+![ShipSense AI User Dashboard 2](assets/user-dashboard2.png)
 
-![ShipSense AI Dashboard 3](assets/dashboard3.png)
+![ShipSense AI User Dashboard 3](assets/user-dashboard3.png)
+
+![ShipSense AI Admin Dashboard 1](assets/admin-dashboard1.png)
+
+![ShipSense AI Admin Dashboard 2](assets/admit-dashboard2.png)
+
+![ShipSense AI Admin Dashboard 3](assets/admit-dashboard3.png)
+
+![ShipSense AI Admin Dashboard 4](assets/admit-dashboard4.png)
 
 ## Mandatory demo login
 
